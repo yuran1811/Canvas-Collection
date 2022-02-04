@@ -119,6 +119,7 @@ const animation = () => {
 	platforms.forEach((platform) => platform.draw());
 	player.update();
 
+	ctx.save();
 	ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
 	ctx.fillRect(0, 0, innerWidth, innerHeight);
 	ctx.fill();
@@ -216,4 +217,9 @@ window.onkeyup = ({ key }) => {
 		default:
 			break;
 	}
+};
+window.onresize = () => {
+	canvas.width = innerWidth;
+	canvas.height = innerHeight;
+	c.restore();
 };

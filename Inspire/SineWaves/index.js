@@ -50,6 +50,8 @@ bgFolder.open();
 let increment = wave.frequency;
 const animation = () => {
 	requestAnimationFrame(animation);
+
+	ctx.save();
 	ctx.fillStyle = `rgba(${bgColor.r}, ${bgColor.g}, ${bgColor.g}, ${bgColor.a})`;
 	ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -72,3 +74,9 @@ const animation = () => {
 	increment += wave.frequency;
 };
 animation();
+
+window.onresize = () => {
+	canvas.width = innerWidth;
+	canvas.height = innerHeight;
+	ctx.restore();
+};

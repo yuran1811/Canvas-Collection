@@ -223,6 +223,8 @@ const removeFromEdge = (list, index, deltaX = 0, deltaY = 0) => {
 let animationID;
 const animation = () => {
 	animationID = requestAnimationFrame(animation);
+
+	ctx.save();
 	ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
 	ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -305,4 +307,10 @@ window.oncontextmenu = (e) => {
 };
 window.onkeydown = (e) => (gameControl[e.key] = true);
 window.onkeyup = (e) => (gameControl[e.key] = false);
+window.onresize = () => {
+	canvas.width = innerWidth;
+	canvas.height = innerHeight;
+	ctx.restore();
+};
+
 // Event Handle ===-->
