@@ -1,4 +1,4 @@
-import * as dat from 'dat.gui';
+import * as dat from './node_modules';
 
 const gui = new dat.GUI();
 const canvas = document.querySelector('#app');
