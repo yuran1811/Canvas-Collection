@@ -76,7 +76,7 @@ const animate = () => {
 	};
 
 	c.save();
-	if (mouseDown) updateAnimation(0.01, 0.03, 0.012);
+	if (mouseDown) updateAnimation(0.01, 0.05, 0.02);
 	else updateAnimation(1, 0.01, 0.001);
 
 	c.fillRect(0, 0, canvas.width, canvas.height);
