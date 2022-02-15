@@ -4,17 +4,15 @@ const ctx = canvas.getContext('2d');
 canvas.width = innerWidth;
 canvas.height = innerHeight;
 
-const gravity = 1.5;
+const GRAVITY = 1.5;
 const PLATFORM_WIDTH = 200;
 
 // <--== Object
 class Player {
 	constructor(x = 300, y = 300) {
 		this.speed = 10;
-
 		this.position = { x, y };
 		this.velocity = { x: 0, y: 1 };
-
 		this.width = 30;
 		this.height = 30;
 	}
@@ -28,7 +26,7 @@ class Player {
 		this.position.x += this.velocity.x;
 		this.position.y += this.velocity.y;
 		if (this.position.y + this.height + this.velocity.y <= innerHeight)
-			this.velocity.y += gravity;
+			this.velocity.y += GRAVITY;
 		else this.velocity.y = 0;
 		this.draw();
 	}
@@ -120,7 +118,7 @@ const animation = () => {
 	player.update();
 
 	ctx.save();
-	ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+	ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
 	ctx.fillRect(0, 0, innerWidth, innerHeight);
 	ctx.fill();
 
@@ -192,10 +190,16 @@ window.onkeydown = ({ key }) => {
 			keys[key].press = 1;
 			break;
 		case 'w':
-			if (player.position.y - player.height >= 0)
-				if (numUp < 3 && ++numUp < 3) player.velocity.y -= 20;
+			if (numUp++ > 2) {
+				setTimeout(() => (numUp = 0), 1000);
+				break;
+			}
+			if (player.position.y >= player.height) {
+				player.velocity.y -= 18;
+			} else player.velocity.y = 0;
 			break;
 		case 's':
+			player.velocity.y += 10;
 			break;
 		default:
 			break;
@@ -208,11 +212,8 @@ window.onkeyup = ({ key }) => {
 			keys[key].press = 0;
 			break;
 		case 'w':
-			if (-player.velocity.y <= innerWidth / 2) numUp = 0;
-			else numUp = 3;
 			break;
 		case 's':
-			player.velocity.y += 15;
 			break;
 		default:
 			break;
@@ -221,5 +222,5 @@ window.onkeyup = ({ key }) => {
 window.onresize = () => {
 	canvas.width = innerWidth;
 	canvas.height = innerHeight;
-	c.restore();
+	ctx.restore();
 };
