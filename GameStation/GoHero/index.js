@@ -1,5 +1,5 @@
 const canvas = document.querySelector('#app');
-const ctx = canvas.getContext('2d');
+const ctx = canvas.getContext('2d', { alpha: false });
 
 canvas.width = innerWidth;
 canvas.height = innerHeight;
@@ -54,7 +54,6 @@ class GenericObject {
 
 	draw() {
 		ctx.beginPath();
-		ctx.fillStyle = 'lightgreen';
 		ctx.arc(
 			this.position.x,
 			this.position.y,
@@ -63,6 +62,7 @@ class GenericObject {
 			Math.PI * 2,
 			false
 		);
+		ctx.fillStyle = 'lightgreen';
 		ctx.fill();
 		ctx.closePath();
 	}
@@ -117,7 +117,6 @@ const animation = () => {
 	platforms.forEach((platform) => platform.draw());
 	player.update();
 
-	ctx.save();
 	ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
 	ctx.fillRect(0, 0, innerWidth, innerHeight);
 	ctx.fill();
@@ -218,9 +217,4 @@ window.onkeyup = ({ key }) => {
 		default:
 			break;
 	}
-};
-window.onresize = () => {
-	canvas.width = innerWidth;
-	canvas.height = innerHeight;
-	ctx.restore();
 };

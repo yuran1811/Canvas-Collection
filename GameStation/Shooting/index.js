@@ -2,7 +2,9 @@ const BACKGROUND = 'rgba(0, 0, 0, 1)';
 const PLAYER_OPTIONS = [
 	{
 		name: 'Admin',
+		radius: 15,
 		color: 'red',
+		shootCD: 500,
 		speedRun: 3,
 		speedShot: 0,
 		boostSpeedRun: 0,
@@ -10,11 +12,13 @@ const PLAYER_OPTIONS = [
 	},
 	{
 		name: 'G9',
-		color: 'green',
-		speedRun: 2,
+		radius: 10,
+		color: 'lightblue',
+		shootCD: 250,
+		speedRun: 6,
 		speedShot: 0,
 		boostSpeedRun: 0,
-		boostSpeedShot: 5,
+		boostSpeedShot: 20,
 	},
 ];
 const ENEMY_OPTIONS = [
@@ -24,13 +28,16 @@ const ENEMY_OPTIONS = [
 const PLAYER_OPTIONS_LTH = PLAYER_OPTIONS.length;
 const ENEMY_OPTIONS_LTH = ENEMY_OPTIONS.length;
 
-const scoreEle = document.querySelector('.score-cnt');
+const scoreEle = document.querySelectorAll('.score-cnt');
+const resultPanel = document.querySelector('.result');
+const restartBtn = document.querySelector('.restart');
 const cursor = document.querySelector('.cursor');
 const canvas = document.querySelector('#app');
 const ctx = canvas.getContext('2d');
 
 const { innerWidth, innerHeight } = window;
 const middle = { x: innerWidth / 2, y: innerHeight / 2 };
+const PROJECTILE_CD = 5;
 const friction = 0.98;
 
 canvas.width = innerWidth;
@@ -38,20 +45,15 @@ canvas.height = innerHeight;
 ctx.fillStyle = BACKGROUND;
 ctx.fillRect(0, 0, innerWidth, innerHeight);
 
+let score = 0;
 let PlayerId = 0;
-const PlayerSelect = PLAYER_OPTIONS[PlayerId];
-
-const mouse = {
-	x: middle.x,
-	y: middle.y,
-};
+let numProjectile = 0;
+let PlayerSelect = PLAYER_OPTIONS[PlayerId];
 
 const playerPos = {
 	x: middle.x,
 	y: middle.y,
 };
-
-let score = 0;
 
 // <--=== Object
 class Player {
@@ -72,8 +74,8 @@ class Player {
 
 	update() {
 		this.draw();
-		this.x = mouse.x;
-		this.y = mouse.y;
+		this.x = playerPos.x;
+		this.y = playerPos.y;
 	}
 }
 
@@ -139,6 +141,7 @@ class Enemy {
 		this.radius = radius;
 		this.color = color;
 		this.velocity = velocity;
+		this.speed = 1;
 	}
 
 	draw() {
@@ -151,17 +154,20 @@ class Enemy {
 
 	update() {
 		this.draw();
+		const angle = Math.atan2(player.y - this.y, player.x - this.x);
+		this.velocity.x = Math.cos(angle) * this.speed;
+		this.velocity.y = Math.sin(angle) * this.speed;
 		this.x += this.velocity.x;
 		this.y += this.velocity.y;
 	}
 }
 // Object ===-->
 
-const player = new Player(mouse.x, mouse.y, 10, 'red');
 const projectiles = [];
 const gameControl = {};
 const particles = [];
 const enemies = [];
+let player;
 
 const cursorRender = (x, y) => {
 	cursor.style.transform = `translate3d(${x}px, ${y}px, 0)`;
@@ -171,19 +177,20 @@ const keyHandle = () => {
 	if (!gameControl) return;
 
 	const delta = PlayerSelect.speedRun + PlayerSelect.boostSpeedRun;
-	if (gameControl['a']) mouse.x -= delta;
-	if (gameControl['d']) mouse.x += delta;
-	if (gameControl['s']) mouse.y += delta;
-	if (gameControl['w']) mouse.y -= delta;
+	if (gameControl['a']) playerPos.x -= delta;
+	if (gameControl['d']) playerPos.x += delta;
+	if (gameControl['s']) playerPos.y += delta;
+	if (gameControl['w']) playerPos.y -= delta;
 };
 
 const increaseScore = (amount) => {
 	score += amount;
-	scoreEle.innerHTML = score;
+	scoreEle.forEach((item) => (item.innerHTML = score));
 };
 
-const spawnEnemies = () => {
-	setInterval(() => {
+let spawnEnemiesID;
+const spawnEnemies = () =>
+	(spawnEnemiesID = setInterval(() => {
 		const enemyIndex =
 			ENEMY_OPTIONS[Math.floor(Math.random() * ENEMY_OPTIONS_LTH)];
 		const radius = enemyIndex.radius;
@@ -206,8 +213,7 @@ const spawnEnemies = () => {
 			y: Math.sin(angle),
 		};
 		enemies.push(new Enemy(x, y, radius, color, velocity));
-	}, 2000);
-};
+	}, 2000));
 
 const removeFromEdge = (list, index, deltaX = 0, deltaY = 0) => {
 	const item = list[index];
@@ -223,8 +229,6 @@ const removeFromEdge = (list, index, deltaX = 0, deltaY = 0) => {
 let animationID;
 const animation = () => {
 	animationID = requestAnimationFrame(animation);
-
-	ctx.save();
 	ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
 	ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -248,8 +252,11 @@ const animation = () => {
 		const dist = Math.hypot(player.x - enemy.x, player.y - enemy.y);
 
 		// End Game
-		if (dist - enemy.radius - player.radius < 1)
+		if (dist - enemy.radius - player.radius < 1) {
 			cancelAnimationFrame(animationID);
+			clearInterval(spawnEnemiesID);
+			resultPanel.style.display = 'flex';
+		}
 
 		projectiles.forEach((pjtile, pjIndex) => {
 			const dist = Math.hypot(pjtile.x - enemy.x, pjtile.y - enemy.y);
@@ -263,26 +270,52 @@ const animation = () => {
 					);
 				}
 
-				if (enemy.radius > 20) {
+				enemy.speed *= 2;
+				if (enemy.radius > 15) {
 					increaseScore(100);
-
 					gsap.to(enemy, {
 						radius: enemy.radius - 10,
 					});
 					projectiles.splice(pjIndex, 1);
 				} else {
 					increaseScore(200);
-
 					enemies.splice(index, 1);
 					projectiles.splice(pjIndex, 1);
 				}
 			}
 		});
 	});
+
+	ctx.save();
 };
 
-animation();
-spawnEnemies();
+const runApp = () => {
+	score = 0;
+	scoreEle.forEach((item) => (item.innerHTML = score));
+
+	PlayerSelect = PLAYER_OPTIONS[PlayerId];
+	playerPos.x = middle.x;
+	playerPos.y = middle.y;
+	player = new Player(
+		playerPos.x,
+		playerPos.y,
+		PlayerSelect.radius,
+		PlayerSelect.color
+	);
+	console.log(middle, player);
+
+	projectiles.length = 0;
+	gameControl.length = 0;
+	particles.length = 0;
+	enemies.length = 0;
+	numProjectile = 0;
+
+	resultPanel.style.display = 'none';
+
+	animation();
+	spawnEnemies();
+};
+runApp();
 
 // <--=== Event Handle
 window.onmousemove = (e) => {
@@ -294,12 +327,15 @@ window.onclick = (e) => {
 	const { clientX, clientY } = e;
 	const angle = Math.atan2(clientY - player.y, clientX - player.x);
 	PlayerSelect.speedShot = gameControl[' '] ? PlayerSelect.boostSpeedShot : 0;
+	if (numProjectile >= 1) return;
+	++numProjectile;
 	projectiles.push(
 		new Projectile(player.x, player.y, 5, 'white', {
 			x: Math.cos(angle) * (5 + PlayerSelect.speedShot),
 			y: Math.sin(angle) * (5 + PlayerSelect.speedShot),
 		})
 	);
+	setTimeout(() => (numProjectile = 0), PlayerSelect.shootCD);
 };
 window.oncontextmenu = (e) => {
 	e.preventDefault();
@@ -313,4 +349,8 @@ window.onresize = () => {
 	ctx.restore();
 };
 
+restartBtn.onclick = (e) => {
+	e.stopPropagation();
+	runApp();
+};
 // Event Handle ===-->

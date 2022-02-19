@@ -19,37 +19,67 @@
 				overflow: hidden;
 				cursor: none;
 			}
+
 			.score-container {
 				color: white;
 				position: fixed;
 				font-size: 3rem;
 				padding: 2rem;
 			}
+
 			.cursor {
-				border-radius: 50%;
-				position: fixed;
-				height: 5rem;
-				z-index: 10;
-				width: 5rem;
 				background-image: url(./1.png);
 				background-size: cover;
+				border-radius: 50%;
+				position: fixed;
+				height: 3.5rem;
+				width: 3.5rem;
+				z-index: 10;
+			}
+
+			.result {
+				inset: 0;
+				z-index: 10;
+				display: none;
+				position: fixed;
+				align-items: center;
+				flex-direction: column;
+				justify-content: center;
+				background-color: rgba(0, 0, 0, 0.6);
+			}
+			.result > span {
+				color: white;
+			}
+			.result .score-title {
+				font-size: 13rem;
+			}
+			.result .score-cnt {
+				font-size: 10rem;
+			}
+			.result .restart {
+				padding: 1rem 1.5rem;
+				border-radius: 2rem;
+				font-size: 4.2rem;
+				margin-top: 1rem;
+				border: none;
+				cursor: none;
 			}
 		</style>
 		<title>Shooting</title>
 	</head>
 	<body>
+		<div class="result">
+			<span class="score-title">Score</span>
+			<span class="score-cnt">0</span>
+			<button class="restart">Restart</button>
+		</div>
 		<div class="cursor"></div>
 		<div class="score-container">
 			<span class="score-title">Score: </span>
 			<span class="score-cnt">0</span>
 		</div>
 		<canvas id="app"></canvas>
-		<script
-			src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"
-			integrity="sha512-H6cPm97FAsgIKmlBA4s774vqoN24V5gSQL4yBTDOY2su2DeXZVhQPxFK4P6GPdnZqM9fg1G3cMv5wD7e6cFLZQ=="
-			crossorigin="anonymous"
-			referrerpolicy="no-referrer"
-		></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
 		<script src="./index.js"></script>
 	</body>
 </html>
