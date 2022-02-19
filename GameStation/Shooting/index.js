@@ -1,59 +1,46 @@
-const BACKGROUND = 'rgba(0, 0, 0, 1)';
-const PLAYER_OPTIONS = [
-	{
-		name: 'Admin',
-		radius: 15,
-		color: 'red',
-		shootCD: 500,
-		speedRun: 3,
-		speedShot: 0,
-		boostSpeedRun: 0,
-		boostSpeedShot: 10,
-	},
-	{
-		name: 'G9',
-		radius: 10,
-		color: 'lightblue',
-		shootCD: 250,
-		speedRun: 6,
-		speedShot: 0,
-		boostSpeedRun: 0,
-		boostSpeedShot: 20,
-	},
-];
 const ENEMY_OPTIONS = [
 	{ name: 'Lv1', color: 'pink', radius: 20 },
 	{ name: 'Lv2', color: 'lightgreen', radius: 25 },
+	{ name: 'Lv3', color: 'orange', radius: 35 },
 ];
 const PLAYER_OPTIONS_LTH = PLAYER_OPTIONS.length;
 const ENEMY_OPTIONS_LTH = ENEMY_OPTIONS.length;
 
-const scoreEle = document.querySelectorAll('.score-cnt');
+const playerPanel = document.querySelector('.player-container');
 const resultPanel = document.querySelector('.result');
+
+const playerItems = document.querySelectorAll('.player-item');
+const startBtn = document.querySelector('.start-game');
 const restartBtn = document.querySelector('.restart');
+
+const scoreEle = document.querySelectorAll('.score-cnt');
 const cursor = document.querySelector('.cursor');
 const canvas = document.querySelector('#app');
 const ctx = canvas.getContext('2d');
 
-const { innerWidth, innerHeight } = window;
 const middle = { x: innerWidth / 2, y: innerHeight / 2 };
 const PROJECTILE_CD = 5;
 const friction = 0.98;
 
-canvas.width = innerWidth;
-canvas.height = innerHeight;
-ctx.fillStyle = BACKGROUND;
-ctx.fillRect(0, 0, innerWidth, innerHeight);
-
-let score = 0;
-let PlayerId = 0;
-let numProjectile = 0;
-let PlayerSelect = PLAYER_OPTIONS[PlayerId];
+const projectiles = [];
+const gameControl = {};
+const particles = [];
+const enemies = [];
 
 const playerPos = {
 	x: middle.x,
 	y: middle.y,
 };
+
+let numProjectile = 0;
+let gameStart = 0;
+let score = 0;
+let PlayerId = 0;
+let PlayerSelect;
+let player;
+
+canvas.width = innerWidth;
+canvas.height = innerHeight;
 
 // <--=== Object
 class Player {
@@ -90,14 +77,11 @@ class Particle {
 	}
 
 	draw() {
-		ctx.save();
-		ctx.globalAlpha = this.alpha;
 		ctx.beginPath();
 		ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
 		ctx.fillStyle = this.color;
 		ctx.fill();
 		ctx.closePath();
-		ctx.restore();
 	}
 
 	update() {
@@ -163,15 +147,8 @@ class Enemy {
 }
 // Object ===-->
 
-const projectiles = [];
-const gameControl = {};
-const particles = [];
-const enemies = [];
-let player;
-
-const cursorRender = (x, y) => {
-	cursor.style.transform = `translate3d(${x}px, ${y}px, 0)`;
-};
+const cursorRender = (x, y) =>
+	(cursor.style.transform = `translate3d(${x}px, ${y}px, 0)`);
 
 const keyHandle = () => {
 	if (!gameControl) return;
@@ -191,12 +168,13 @@ const increaseScore = (amount) => {
 let spawnEnemiesID;
 const spawnEnemies = () =>
 	(spawnEnemiesID = setInterval(() => {
-		const enemyIndex =
-			ENEMY_OPTIONS[Math.floor(Math.random() * ENEMY_OPTIONS_LTH)];
-		const radius = enemyIndex.radius;
+		const enemyIndex = Math.floor(Math.random() * ENEMY_OPTIONS_LTH);
+		const enemyInfo = ENEMY_OPTIONS[enemyIndex];
+		const radius = enemyInfo.radius;
+		const color = enemyInfo.color;
+
 		let x = 0;
 		let y = 0;
-
 		if (Math.random() < 0.5) {
 			x = Math.random() < 0.5 ? 0 - radius : innerWidth + radius;
 			y = Math.floor(Math.random() * innerHeight);
@@ -205,17 +183,15 @@ const spawnEnemies = () =>
 			y = Math.random() < 0.5 ? 0 - radius : innerHeight + radius;
 		}
 
-		const color = enemyIndex.color;
-
 		const angle = Math.atan2(player.y - y, player.x - x);
 		const velocity = {
 			x: Math.cos(angle),
 			y: Math.sin(angle),
 		};
 		enemies.push(new Enemy(x, y, radius, color, velocity));
-	}, 2000));
+	}, 3000));
 
-const removeFromEdge = (list, index, deltaX = 0, deltaY = 0) => {
+const removeFromEdge = (list, index) => {
 	const item = list[index];
 	if (
 		item.x + item.radius < 0 ||
@@ -229,8 +205,9 @@ const removeFromEdge = (list, index, deltaX = 0, deltaY = 0) => {
 let animationID;
 const animation = () => {
 	animationID = requestAnimationFrame(animation);
-	ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+	ctx.fillStyle = `rgba(0, 0, 0, 0.12)`;
 	ctx.fillRect(0, 0, canvas.width, canvas.height);
+	ctx.save();
 
 	keyHandle();
 	player.update();
@@ -285,15 +262,16 @@ const animation = () => {
 			}
 		});
 	});
-
-	ctx.save();
 };
 
 const runApp = () => {
 	score = 0;
 	scoreEle.forEach((item) => (item.innerHTML = score));
 
-	PlayerSelect = PLAYER_OPTIONS[PlayerId];
+	PlayerId = playerPanel.querySelector('input:checked')?.dataset.index || 0;
+	PlayerSelect = new PLAYER_OPTIONS[PlayerId].constructure(
+		PLAYER_OPTIONS[PlayerId].prop
+	);
 	playerPos.x = middle.x;
 	playerPos.y = middle.y;
 	player = new Player(
@@ -302,7 +280,6 @@ const runApp = () => {
 		PlayerSelect.radius,
 		PlayerSelect.color
 	);
-	console.log(middle, player);
 
 	projectiles.length = 0;
 	gameControl.length = 0;
@@ -311,16 +288,16 @@ const runApp = () => {
 	numProjectile = 0;
 
 	resultPanel.style.display = 'none';
+	playerPanel.style.display = 'none';
 
 	animation();
 	spawnEnemies();
 };
-runApp();
 
 // <--=== Event Handle
 window.onmousemove = (e) => {
 	const { clientX, clientY } = e;
-	cursorRender(clientX, clientY);
+	// cursorRender(clientX, clientY);
 };
 window.onclick = (e) => {
 	PlayerSelect.boostSpeedRun = 0;
@@ -349,8 +326,22 @@ window.onresize = () => {
 	ctx.restore();
 };
 
-restartBtn.onclick = (e) => {
+resultPanel.onclick = (e) => e.stopPropagation();
+playerPanel.onclick = (e) => e.stopPropagation();
+startBtn.onclick = (e) => {
 	e.stopPropagation();
 	runApp();
 };
+restartBtn.onclick = (e) => {
+	e.stopPropagation();
+	playerPanel.style.display = 'flex';
+	resultPanel.style.display = 'none';
+};
+
+playerItems.forEach((item) => {
+	item.onclick = () => {
+		const input = item.querySelector('input');
+		input.checked = 1;
+	};
+});
 // Event Handle ===-->
