@@ -295,11 +295,11 @@ const runApp = () => {
 };
 
 // <--=== Event Handle
-window.onmousemove = (e) => {
+onmousemove = (e) => {
 	const { clientX, clientY } = e;
 	// cursorRender(clientX, clientY);
 };
-window.onclick = (e) => {
+onclick = (e) => {
 	PlayerSelect.boostSpeedRun = 0;
 	const { clientX, clientY } = e;
 	const angle = Math.atan2(clientY - player.y, clientX - player.x);
@@ -314,13 +314,13 @@ window.onclick = (e) => {
 	);
 	setTimeout(() => (numProjectile = 0), PlayerSelect.shootCD);
 };
-window.oncontextmenu = (e) => {
+oncontextmenu = (e) => {
 	e.preventDefault();
 	PlayerSelect.boostSpeedRun += 1;
 };
-window.onkeydown = (e) => (gameControl[e.key] = true);
-window.onkeyup = (e) => (gameControl[e.key] = false);
-window.onresize = () => {
+onkeydown = (e) => (gameControl[e.key] = true);
+onkeyup = (e) => (gameControl[e.key] = false);
+onresize = () => {
 	canvas.width = innerWidth;
 	canvas.height = innerHeight;
 	ctx.restore();

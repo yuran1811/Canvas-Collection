@@ -4,8 +4,11 @@ const ctx = canvas.getContext('2d', { alpha: false });
 canvas.width = innerWidth;
 canvas.height = innerHeight;
 
-const GRAVITY = 1.5;
+const SPACE = 300;
+const NUM_BLOCK = 20;
+const MARGIN = 400;
 const PLATFORM_WIDTH = 200;
+const GRAVITY = 1.5;
 
 // <--== Object
 class Player {
@@ -69,16 +72,12 @@ class GenericObject {
 }
 // Object ==-->
 
-let player;
-let platforms = [];
 let genericObjects = [];
+let platforms = [];
 let keys = {};
-let scrollOffset = 0;
+let player;
 let numUp = 0;
-
-const SPACE = 300;
-const NUM_BLOCK = 20;
-const MARGIN = 400;
+let scrollOffset = 0;
 
 const init = () => {
 	player = new Player(300, 200);
@@ -119,15 +118,14 @@ const animation = () => {
 
 	ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
 	ctx.fillRect(0, 0, innerWidth, innerHeight);
-	ctx.fill();
 
 	if (keys['d'].press && player.position.x < innerWidth / 2 - 100)
 		player.velocity.x = player.speed;
 	else if (
 		(keys['a'].press && player.position.x > 100) ||
 		(keys['a'].press &&
-			platforms.every((platform) => platform.position.x > 0) &&
-			scrollOffset === 0)
+			scrollOffset === 0 &&
+			platforms.every((platform) => platform.position.x > 0))
 	)
 		player.velocity.x = -player.speed;
 	else {
@@ -181,8 +179,8 @@ init();
 animation();
 
 // Event Handle
-window.oncontextmenu = (e) => e.preventDefault();
-window.onkeydown = ({ key }) => {
+oncontextmenu = (e) => e.preventDefault();
+onkeydown = ({ key }) => {
 	switch (key) {
 		case 'a':
 		case 'd':
@@ -204,7 +202,7 @@ window.onkeydown = ({ key }) => {
 			break;
 	}
 };
-window.onkeyup = ({ key }) => {
+onkeyup = ({ key }) => {
 	switch (key) {
 		case 'a':
 		case 'd':
