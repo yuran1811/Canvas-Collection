@@ -66,7 +66,6 @@ window.onmousemove = (e) => {
 	mouse.x = e.clientX;
 	mouse.y = e.clientY;
 };
-
 window.onresize = () => {
 	canvas.width = innerWidth;
 	canvas.height = innerHeight;
@@ -78,8 +77,8 @@ const init = () => {
 		const x = Math.random() * innerWidth;
 		const y = Math.random() * innerHeight;
 		const velocity = {
-			x: Math.random() * 2 + 2,
-			y: Math.random() * 2 + 2,
+			x: Math.random() * 6 - 3,
+			y: Math.random() * 6 - 3,
 		};
 		particles.push(
 			new Particle(x, y, PARTICLE_RADIUS, PARTICLE_COLOR, velocity)
@@ -90,12 +89,40 @@ const init = () => {
 const animation = () => {
 	requestAnimationFrame(animation);
 	c.clearRect(0, 0, innerWidth, innerHeight);
+
 	particles.forEach((item, index) => {
 		item.update();
 		particles.slice(index).forEach((adj) => drawEdges(item, adj));
 	});
-	// c.save();
+	particles.forEach((item) => {
+		drawEdges(item, mouse);
+	});
 };
 
 init();
 animation();
+
+canvas.onclick = (e) => {
+	const velocity = {
+		x: Math.random() * 6 - 3,
+		y: Math.random() * 6 - 3,
+	};
+	particles.push(
+		new Particle(
+			e.clientX,
+			e.clientY,
+			PARTICLE_RADIUS,
+			PARTICLE_COLOR,
+			velocity
+		)
+	);
+};
+canvas.oncontextmenu = (e) => {
+	e.preventDefault();
+	const calcDist = ({ x, y }, { clientX, clientY }) =>
+		(clientX - x) ** 2 + (clientY - y) ** 2;
+	particles.forEach((item, index) => {
+		if (calcDist(item, e) <= 4 * PARTICLE_RADIUS * PARTICLE_RADIUS)
+			particles.splice(index, 1);
+	});
+};

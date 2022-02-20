@@ -55,7 +55,7 @@ class Particle {
 		this.velocity.y += gravity;
 		this.x += this.velocity.x;
 		this.y += this.velocity.y;
-		this.time -= 0.003;
+		this.time -= 0.005;
 	}
 }
 
