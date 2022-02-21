@@ -77,6 +77,7 @@ window.onmousemove = (e) => {
 };
 
 window.onresize = () => {
+	c.save();
 	canvas.width = innerWidth;
 	canvas.height = innerHeight;
 	c.restore();
@@ -93,12 +94,10 @@ const init = () => {
 
 const animation = () => {
 	requestAnimationFrame(animation);
-	// c.fillStyle = `rgba(255, 255, 255, 0.5)`;
-	// c.fillRect(0, 0, innerWidth, innerHeight);
-	c.clearRect(0, 0, innerWidth, innerHeight);
+	c.fillStyle = `rgba(255, 255, 255, 0.4)`;
+	c.fillRect(0, 0, innerWidth, innerHeight);
 	myCircle.update();
 	particles.forEach((item) => item.update());
-	c.save();
 };
 
 init();

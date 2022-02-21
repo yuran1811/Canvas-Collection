@@ -82,11 +82,11 @@ window.onclick = (e) => {
 	for (let i = 0; i < numParticles; i++) {
 		const { x, y } = mouse;
 		const color = colors[Math.floor(Math.random() * colorsLth)];
-		const radius = 5;
+		const radius = 3;
 
 		const velocity = {
-			x: Math.cos(onePiece * i) * Math.random() * 10,
-			y: Math.sin(onePiece * i) * Math.random() * 10,
+			x: Math.cos(onePiece * i) * Math.random() * 7,
+			y: Math.sin(onePiece * i) * Math.random() * 7,
 		};
 
 		particles.push(new Particle(x, y, radius, color, velocity));

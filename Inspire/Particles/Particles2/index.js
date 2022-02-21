@@ -67,6 +67,7 @@ window.onmousemove = (e) => {
 	mouse.y = e.clientY;
 };
 window.onresize = () => {
+	c.save();
 	canvas.width = innerWidth;
 	canvas.height = innerHeight;
 	c.restore();
@@ -116,6 +117,7 @@ canvas.onclick = (e) => {
 			velocity
 		)
 	);
+	if (particles.length > innerWidth / 16) particles.shift();
 };
 canvas.oncontextmenu = (e) => {
 	e.preventDefault();
