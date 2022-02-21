@@ -216,3 +216,9 @@ onkeyup = ({ key }) => {
 			break;
 	}
 };
+onresize = () => {
+	ctx.save();
+	canvas.width = innerWidth;
+	canvas.height = innerHeight;
+	ctx.restore();
+};

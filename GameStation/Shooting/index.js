@@ -1,7 +1,7 @@
 const ENEMY_OPTIONS = [
-	{ name: 'Lv1', color: 'pink', radius: 20 },
-	{ name: 'Lv2', color: 'lightgreen', radius: 25 },
-	{ name: 'Lv3', color: 'orange', radius: 35 },
+	{ name: 'Lv1', color: 'pink', radius: 20, speed: 2 },
+	{ name: 'Lv2', color: 'lightgreen', radius: 25, speed: 1.6 },
+	{ name: 'Lv3', color: 'orange', radius: 35, speed: 1.2 },
 ];
 const PLAYER_OPTIONS_LTH = PLAYER_OPTIONS.length;
 const ENEMY_OPTIONS_LTH = ENEMY_OPTIONS.length;
@@ -119,13 +119,13 @@ class Projectile {
 }
 
 class Enemy {
-	constructor(x, y, radius, color, velocity) {
+	constructor(x, y, radius, color, velocity, speed) {
 		this.x = x;
 		this.y = y;
 		this.radius = radius;
 		this.color = color;
 		this.velocity = velocity;
-		this.speed = 1;
+		this.speed = speed;
 	}
 
 	draw() {
@@ -170,8 +170,7 @@ const spawnEnemies = () =>
 	(spawnEnemiesID = setInterval(() => {
 		const enemyIndex = Math.floor(Math.random() * ENEMY_OPTIONS_LTH);
 		const enemyInfo = ENEMY_OPTIONS[enemyIndex];
-		const radius = enemyInfo.radius;
-		const color = enemyInfo.color;
+		const { radius, color, speed } = enemyInfo;
 
 		let x = 0;
 		let y = 0;
@@ -185,10 +184,10 @@ const spawnEnemies = () =>
 
 		const angle = Math.atan2(player.y - y, player.x - x);
 		const velocity = {
-			x: Math.cos(angle),
-			y: Math.sin(angle),
+			x: Math.cos(angle) * speed,
+			y: Math.sin(angle) * speed,
 		};
-		enemies.push(new Enemy(x, y, radius, color, velocity));
+		enemies.push(new Enemy(x, y, radius, color, velocity, speed));
 	}, 3000));
 
 const removeFromEdge = (list, index) => {
@@ -207,7 +206,6 @@ const animation = () => {
 	animationID = requestAnimationFrame(animation);
 	ctx.fillStyle = `rgba(0, 0, 0, 0.12)`;
 	ctx.fillRect(0, 0, canvas.width, canvas.height);
-	ctx.save();
 
 	keyHandle();
 	player.update();
@@ -249,13 +247,13 @@ const animation = () => {
 
 				enemy.speed *= 2;
 				if (enemy.radius > 15) {
-					increaseScore(100);
+					increaseScore(10);
 					gsap.to(enemy, {
 						radius: enemy.radius - 10,
 					});
 					projectiles.splice(pjIndex, 1);
 				} else {
-					increaseScore(200);
+					increaseScore(30);
 					enemies.splice(index, 1);
 					projectiles.splice(pjIndex, 1);
 				}
@@ -321,6 +319,7 @@ oncontextmenu = (e) => {
 onkeydown = (e) => (gameControl[e.key] = true);
 onkeyup = (e) => (gameControl[e.key] = false);
 onresize = () => {
+	ctx.save();
 	canvas.width = innerWidth;
 	canvas.height = innerHeight;
 	ctx.restore();
