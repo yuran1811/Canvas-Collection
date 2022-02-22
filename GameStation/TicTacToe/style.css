@@ -23,7 +23,7 @@
 	--noel-color: rgb(108, 212, 171);
 
 	--yin-yang-background: black;
-	--yin-yang-color: rgb(160, 160, 160);
+	--yin-yang-color: rgb(210, 210, 210);
 }
 
 * {
@@ -35,6 +35,13 @@
 ::selection {
 	color: var(--background);
 	background-color: var(--color);
+}
+
+canvas {
+	position: fixed;
+	display: none;
+	z-index: -1;
+	inset: 0;
 }
 
 body {
