@@ -1,7 +1,29 @@
+const CSTRUCTURE = function ({
+	name,
+	radius,
+	color,
+	shootCD,
+	speedRun,
+	speedShot,
+	boostSpeedRun,
+	boostSpeedShot,
+	attackDamage,
+}) {
+	this.name = name;
+	this.radius = radius;
+	this.color = color;
+	this.shootCD = shootCD;
+	this.speedRun = speedRun;
+	this.speedShot = speedShot;
+	this.boostSpeedRun = boostSpeedRun;
+	this.boostSpeedShot = boostSpeedShot;
+	this.attackDamage = attackDamage;
+};
+
 const PLAYER_OPTIONS = [
 	{
 		prop: {
-			name: 'Admin',
+			name: 'Red',
 			radius: 15,
 			color: 'red',
 			shootCD: 500,
@@ -9,30 +31,13 @@ const PLAYER_OPTIONS = [
 			speedShot: 0,
 			boostSpeedRun: 0,
 			boostSpeedShot: 10,
+			attackDamage: 25,
 		},
-		constructure: function ({
-			name,
-			radius,
-			color,
-			shootCD,
-			speedRun,
-			speedShot,
-			boostSpeedRun,
-			boostSpeedShot,
-		}) {
-			this.name = name;
-			this.radius = radius;
-			this.color = color;
-			this.shootCD = shootCD;
-			this.speedRun = speedRun;
-			this.speedShot = speedShot;
-			this.boostSpeedRun = boostSpeedRun;
-			this.boostSpeedShot = boostSpeedShot;
-		},
+		constructure: CSTRUCTURE,
 	},
 	{
 		prop: {
-			name: 'G9',
+			name: 'Blue',
 			radius: 10,
 			color: 'lightblue',
 			shootCD: 250,
@@ -40,26 +45,23 @@ const PLAYER_OPTIONS = [
 			speedShot: 0,
 			boostSpeedRun: 0,
 			boostSpeedShot: 20,
+			attackDamage: 10,
 		},
-		constructure: function ({
-			name,
-			radius,
-			color,
-			shootCD,
-			speedRun,
-			speedShot,
-			boostSpeedRun,
-			boostSpeedShot,
-		}) {
-			this.name = name;
-			this.radius = radius;
-			this.color = color;
-			this.shootCD = shootCD;
-			this.speedRun = speedRun;
-			this.speedShot = speedShot;
-			this.boostSpeedRun = boostSpeedRun;
-			this.boostSpeedShot = boostSpeedShot;
+		constructure: CSTRUCTURE,
+	},
+	{
+		prop: {
+			name: 'Chumeodiia',
+			radius: 10,
+			color: 'pink',
+			shootCD: 150,
+			speedRun: 3,
+			speedShot: 0,
+			boostSpeedRun: 0,
+			boostSpeedShot: 30,
+			attackDamage: 7,
 		},
+		constructure: CSTRUCTURE,
 	},
 ];
 

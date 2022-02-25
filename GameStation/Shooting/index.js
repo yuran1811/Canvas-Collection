@@ -245,12 +245,15 @@ const animation = () => {
 					);
 				}
 
-				enemy.speed *= 2;
+				if (enemy.speed < 6) enemy.speed *= 2;
 				if (enemy.radius > 15) {
 					increaseScore(10);
-					gsap.to(enemy, {
-						radius: enemy.radius - 10,
-					});
+					const newRadius = enemy.radius - PlayerSelect.attackDamage;
+					if (newRadius < 5) enemies.splice(index, 1);
+					else
+						gsap.to(enemy, {
+							radius: newRadius,
+						});
 					projectiles.splice(pjIndex, 1);
 				} else {
 					increaseScore(30);
@@ -341,6 +344,14 @@ playerItems.forEach((item) => {
 	item.onclick = () => {
 		const input = item.querySelector('input');
 		input.checked = 1;
+
+		const lastSelect = document.querySelector('.player-select');
+		if (lastSelect)
+			lastSelect.className = lastSelect.className.replace(
+				'player-select',
+				''
+			);
+		item.classList.add('player-select');
 	};
 });
 // Event Handle ===-->
