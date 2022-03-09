@@ -1,7 +1,28 @@
 const ENEMY_OPTIONS = [
-	{ name: 'Lv1', color: 'pink', radius: 20, speed: 2 },
-	{ name: 'Lv2', color: 'lightgreen', radius: 25, speed: 1.6 },
-	{ name: 'Lv3', color: 'orange', radius: 35, speed: 1.2 },
+	{
+		name: 'Lv1',
+		color: 'pink',
+		radius: 20,
+		speed: 3,
+		speedShot: 1,
+		attackCD: 3,
+	},
+	{
+		name: 'Lv2',
+		color: 'lightgreen',
+		radius: 25,
+		speed: 2.2,
+		speedShot: 2,
+		attackCD: 2,
+	},
+	{
+		name: 'Lv3',
+		color: 'orange',
+		radius: 35,
+		speed: 1.5,
+		speedShot: 3,
+		attackCD: 1,
+	},
 ];
 const PLAYER_OPTIONS_LTH = PLAYER_OPTIONS.length;
 const ENEMY_OPTIONS_LTH = ENEMY_OPTIONS.length;
@@ -22,15 +43,11 @@ const middle = { x: innerWidth / 2, y: innerHeight / 2 };
 const PROJECTILE_CD = 5;
 const friction = 0.98;
 
+const projectilesEnemies = [];
 const projectiles = [];
 const gameControl = {};
 const particles = [];
 const enemies = [];
-
-const playerPos = {
-	x: middle.x,
-	y: middle.y,
-};
 
 let numProjectile = 0;
 let gameStart = 0;
@@ -59,10 +76,27 @@ class Player {
 		ctx.closePath();
 	}
 
+	keyHandle(control) {
+		if (!control) return;
+
+		const delta = PlayerSelect.speedRun + PlayerSelect.boostSpeedRun;
+		if (control['a']) {
+			if (this.x - delta > this.radius) this.x -= delta;
+		}
+		if (control['d']) {
+			if (this.x + delta < innerWidth - this.radius) this.x += delta;
+		}
+		if (control['s']) {
+			if (this.y + delta < innerHeight - this.radius) this.y += delta;
+		}
+		if (control['w']) {
+			if (this.y - delta > this.radius) this.y -= delta;
+		}
+	}
+
 	update() {
 		this.draw();
-		this.x = playerPos.x;
-		this.y = playerPos.y;
+		this.keyHandle(gameControl);
 	}
 }
 
@@ -95,12 +129,13 @@ class Particle {
 }
 
 class Projectile {
-	constructor(x, y, radius, color, velocity) {
+	constructor(x, y, radius, color, velocity, isEnemy) {
 		this.x = x;
 		this.y = y;
 		this.radius = radius;
 		this.color = color;
 		this.velocity = velocity;
+		this.isEnemy = isEnemy;
 	}
 
 	draw() {
@@ -119,13 +154,16 @@ class Projectile {
 }
 
 class Enemy {
-	constructor(x, y, radius, color, velocity, speed) {
+	constructor(x, y, radius, color, velocity, speed, speedShot, attackCD) {
 		this.x = x;
 		this.y = y;
 		this.radius = radius;
 		this.color = color;
 		this.velocity = velocity;
 		this.speed = speed;
+		this.speedShot = speedShot;
+		this.attackCD = attackCD;
+		this.attackCDCount = attackCD;
 	}
 
 	draw() {
@@ -136,29 +174,51 @@ class Enemy {
 		ctx.closePath();
 	}
 
+	attack() {
+		const angle = Math.atan2(player.y - this.y, player.x - this.x);
+		const x = this.x + Math.cos(angle) * (this.radius * 2);
+		const y = this.y + Math.sin(angle) * (this.radius * 2);
+		projectiles.push(
+			new Projectile(
+				x,
+				y,
+				this.radius / 3,
+				'red',
+				{
+					x: Math.cos(angle) * (5 + this.speedShot),
+					y: Math.sin(angle) * (5 + this.speedShot),
+				},
+				1
+			)
+		);
+	}
+
 	update() {
 		this.draw();
+
 		const angle = Math.atan2(player.y - this.y, player.x - this.x);
 		this.velocity.x = Math.cos(angle) * this.speed;
 		this.velocity.y = Math.sin(angle) * this.speed;
 		this.x += this.velocity.x;
 		this.y += this.velocity.y;
+
+		this.attackCDCount += 0.01;
+		if (this.attackCDCount >= this.attackCD) {
+			this.attackCDCount = 0;
+			this.attack();
+		}
 	}
 }
 // Object ===-->
 
+const endGame = () => {
+	cancelAnimationFrame(animationID);
+	clearInterval(spawnEnemiesID);
+	resultPanel.style.display = 'flex';
+};
+
 const cursorRender = (x, y) =>
 	(cursor.style.transform = `translate3d(${x}px, ${y}px, 0)`);
-
-const keyHandle = () => {
-	if (!gameControl) return;
-
-	const delta = PlayerSelect.speedRun + PlayerSelect.boostSpeedRun;
-	if (gameControl['a']) playerPos.x -= delta;
-	if (gameControl['d']) playerPos.x += delta;
-	if (gameControl['s']) playerPos.y += delta;
-	if (gameControl['w']) playerPos.y -= delta;
-};
 
 const increaseScore = (amount) => {
 	score += amount;
@@ -170,7 +230,7 @@ const spawnEnemies = () =>
 	(spawnEnemiesID = setInterval(() => {
 		const enemyIndex = Math.floor(Math.random() * ENEMY_OPTIONS_LTH);
 		const enemyInfo = ENEMY_OPTIONS[enemyIndex];
-		const { radius, color, speed } = enemyInfo;
+		const { radius, color, speed, speedShot, attackCD } = enemyInfo;
 
 		let x = 0;
 		let y = 0;
@@ -187,8 +247,10 @@ const spawnEnemies = () =>
 			x: Math.cos(angle) * speed,
 			y: Math.sin(angle) * speed,
 		};
-		enemies.push(new Enemy(x, y, radius, color, velocity, speed));
-	}, 3000));
+		enemies.push(
+			new Enemy(x, y, radius, color, velocity, speed, speedShot, attackCD)
+		);
+	}, 2000));
 
 const removeFromEdge = (list, index) => {
 	const item = list[index];
@@ -207,7 +269,6 @@ const animation = () => {
 	ctx.fillStyle = `rgba(0, 0, 0, 0.12)`;
 	ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-	keyHandle();
 	player.update();
 
 	particles.forEach((item, index) => {
@@ -215,25 +276,42 @@ const animation = () => {
 		else item.update();
 	});
 
-	projectiles.forEach((item, index) => {
+	projectiles.forEach((item, index, arr) => {
 		item.update();
-		removeFromEdge(projectiles, index);
+		removeFromEdge(arr, index);
 	});
 
 	enemies.forEach((enemy, index) => {
 		enemy.update();
-		removeFromEdge(enemies, index, enemy.x, enemy.y);
+		// removeFromEdge(enemies, index, enemy.x, enemy.y);
 
 		const dist = Math.hypot(player.x - enemy.x, player.y - enemy.y);
-
-		// End Game
-		if (dist - enemy.radius - player.radius < 1) {
-			cancelAnimationFrame(animationID);
-			clearInterval(spawnEnemiesID);
-			resultPanel.style.display = 'flex';
-		}
+		if (dist - enemy.radius - player.radius < 1) endGame();
 
 		projectiles.forEach((pjtile, pjIndex) => {
+			if (pjtile.isEnemy) {
+				const dist = Math.hypot(
+					pjtile.x - player.x,
+					pjtile.y - player.y
+				);
+
+				// End Game
+				if (dist - pjtile.radius - player.radius <= 0) endGame();
+
+				projectiles.slice(pjIndex).forEach((item, idx) => {
+					if (item.isEnemy) return;
+					const dist = Math.hypot(
+						pjtile.x - item.x,
+						pjtile.y - item.y
+					);
+					if (dist <= 5 * 2) {
+						projectiles.splice(idx, 1);
+						projectiles.splice(pjIndex, 1);
+					}
+				});
+				return;
+			}
+
 			const dist = Math.hypot(pjtile.x - enemy.x, pjtile.y - enemy.y);
 			if (dist - enemy.radius - pjtile.radius < 1) {
 				for (let i = 0; i < 8; i++) {
@@ -245,7 +323,7 @@ const animation = () => {
 					);
 				}
 
-				if (enemy.speed < 6) enemy.speed *= 2;
+				if (enemy.speed < 8) enemy.speed *= 2;
 				if (enemy.radius > 15) {
 					increaseScore(10);
 					const newRadius = enemy.radius - PlayerSelect.attackDamage;
@@ -267,17 +345,14 @@ const animation = () => {
 
 const runApp = () => {
 	score = 0;
+	gameStart = 1;
 	scoreEle.forEach((item) => (item.innerHTML = score));
 
 	PlayerId = playerPanel.querySelector('input:checked')?.dataset.index || 0;
-	PlayerSelect = new PLAYER_OPTIONS[PlayerId].constructure(
-		PLAYER_OPTIONS[PlayerId].prop
-	);
-	playerPos.x = middle.x;
-	playerPos.y = middle.y;
+	PlayerSelect = new CSTRUCTURE(PLAYER_OPTIONS[PlayerId].prop);
 	player = new Player(
-		playerPos.x,
-		playerPos.y,
+		middle.x,
+		middle.y,
 		PlayerSelect.radius,
 		PlayerSelect.color
 	);
@@ -296,29 +371,44 @@ const runApp = () => {
 };
 
 // <--=== Event Handle
+const boostSpeedRunHandle = (e) => {
+	e.preventDefault();
+	if (!gameStart) return;
+
+	if (PlayerSelect.boostSpeedRun < PlayerSelect.maxBoostSpeedRun)
+		PlayerSelect.boostSpeedRun++;
+};
+
 onmousemove = (e) => {
 	const { clientX, clientY } = e;
 	// cursorRender(clientX, clientY);
 };
 onclick = (e) => {
-	PlayerSelect.boostSpeedRun = 0;
 	const { clientX, clientY } = e;
 	const angle = Math.atan2(clientY - player.y, clientX - player.x);
+
+	PlayerSelect.boostSpeedRun = 0;
 	PlayerSelect.speedShot = gameControl[' '] ? PlayerSelect.boostSpeedShot : 0;
+
 	if (numProjectile >= 1) return;
+
 	++numProjectile;
 	projectiles.push(
-		new Projectile(player.x, player.y, 5, 'white', {
-			x: Math.cos(angle) * (5 + PlayerSelect.speedShot),
-			y: Math.sin(angle) * (5 + PlayerSelect.speedShot),
-		})
+		new Projectile(
+			player.x,
+			player.y,
+			5,
+			'white',
+			{
+				x: Math.cos(angle) * (5 + PlayerSelect.speedShot),
+				y: Math.sin(angle) * (5 + PlayerSelect.speedShot),
+			},
+			0
+		)
 	);
 	setTimeout(() => (numProjectile = 0), PlayerSelect.shootCD);
 };
-oncontextmenu = (e) => {
-	e.preventDefault();
-	PlayerSelect.boostSpeedRun += 1;
-};
+oncontextmenu = boostSpeedRunHandle;
 onkeydown = (e) => (gameControl[e.key] = true);
 onkeyup = (e) => (gameControl[e.key] = false);
 onresize = () => {
@@ -340,7 +430,9 @@ restartBtn.onclick = (e) => {
 	resultPanel.style.display = 'none';
 };
 
-playerItems.forEach((item) => {
+playerItems.forEach((item, index) => {
+	if (!index) item.classList.add('player-select');
+
 	item.onclick = () => {
 		const input = item.querySelector('input');
 		input.checked = 1;

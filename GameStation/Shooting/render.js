@@ -1,24 +1,30 @@
-const CSTRUCTURE = function ({
-	name,
-	radius,
-	color,
-	shootCD,
-	speedRun,
-	speedShot,
-	boostSpeedRun,
-	boostSpeedShot,
-	attackDamage,
-}) {
-	this.name = name;
-	this.radius = radius;
-	this.color = color;
-	this.shootCD = shootCD;
-	this.speedRun = speedRun;
-	this.speedShot = speedShot;
-	this.boostSpeedRun = boostSpeedRun;
-	this.boostSpeedShot = boostSpeedShot;
-	this.attackDamage = attackDamage;
-};
+class CSTRUCTURE {
+	constructor({
+		name,
+		radius,
+		color,
+		shootCD,
+		speedRun,
+		speedShot,
+		boostSpeedRun,
+		maxBoostSpeedRun,
+		boostSpeedShot,
+		boostSpeedShotCD,
+		attackDamage,
+	}) {
+		this.name = name;
+		this.radius = radius;
+		this.color = color;
+		this.shootCD = shootCD;
+		this.speedRun = speedRun;
+		this.speedShot = speedShot;
+		this.boostSpeedRun = boostSpeedRun;
+		this.maxBoostSpeedRun = maxBoostSpeedRun;
+		this.boostSpeedShot = boostSpeedShot;
+		this.boostSpeedShotCD = boostSpeedShotCD;
+		this.attackDamage = attackDamage;
+	}
+}
 
 const PLAYER_OPTIONS = [
 	{
@@ -26,42 +32,45 @@ const PLAYER_OPTIONS = [
 			name: 'Red',
 			radius: 15,
 			color: 'red',
-			shootCD: 500,
-			speedRun: 3,
+			shootCD: 600,
+			speedRun: 2,
 			speedShot: 0,
 			boostSpeedRun: 0,
+			maxBoostSpeedRun: 8,
 			boostSpeedShot: 10,
-			attackDamage: 25,
+			boostSpeedShotCD: 3,
+			attackDamage: 20,
 		},
-		constructure: CSTRUCTURE,
 	},
 	{
 		prop: {
 			name: 'Blue',
-			radius: 10,
+			radius: 8,
 			color: 'lightblue',
-			shootCD: 250,
-			speedRun: 6,
+			shootCD: 400,
+			speedRun: 5,
 			speedShot: 0,
 			boostSpeedRun: 0,
+			maxBoostSpeedRun: 8,
 			boostSpeedShot: 20,
-			attackDamage: 10,
+			boostSpeedShotCD: 4,
+			attackDamage: 15,
 		},
-		constructure: CSTRUCTURE,
 	},
 	{
 		prop: {
-			name: 'Chumeodiia',
+			name: 'pink',
 			radius: 10,
 			color: 'pink',
-			shootCD: 150,
+			shootCD: 275,
 			speedRun: 3,
 			speedShot: 0,
 			boostSpeedRun: 0,
+			maxBoostSpeedRun: 8,
 			boostSpeedShot: 30,
-			attackDamage: 7,
+			boostSpeedShotCD: 5,
+			attackDamage: 10,
 		},
-		constructure: CSTRUCTURE,
 	},
 ];
 
@@ -88,5 +97,6 @@ const PLAYER_OPTIONS = [
 			</div>`
 			).join('')}
 		</div>
-		<button class="start-game">Start</button>`;
+		<button class="start-game">Start</button>
+		<div class="player-info"></div>`;
 })();

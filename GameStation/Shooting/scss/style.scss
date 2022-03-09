@@ -1,0 +1,93 @@
+* {
+	margin: 0;
+	padding: 0;
+	color: white;
+	cursor: default;
+	font-size: 3rem;
+	user-select: none;
+	box-sizing: border-box;
+	font-family: 'Trebuchet MS', sans-serif;
+}
+html {
+	font-size: 62.5%;
+}
+body {
+	overflow: hidden;
+}
+
+button {
+	padding: 1rem 1.5rem;
+	border-radius: 2rem;
+	margin-top: 1rem;
+	color: black;
+	border: none;
+	cursor: pointer;
+}
+.cursor {
+	background-image: url(./img/1.jpg);
+	background-size: cover;
+	border-radius: 50%;
+	position: fixed;
+	height: 3.5rem;
+	width: 3.5rem;
+	z-index: 100;
+	display: none;
+}
+.player-container {
+	background-color: black;
+	position: fixed;
+	z-index: 10;
+	inset: 0;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	justify-content: center;
+
+	.player-panel-title {
+		font-size: 5rem;
+	}
+	.player-selects {
+		position: relative;
+		width: 100%;
+		display: flex;
+		flex-flow: row wrap;
+		align-items: center;
+		justify-content: center;
+
+		.player-item {
+			position: relative;
+			margin: 2rem;
+			cursor: pointer;
+			input {
+				display: none;
+			}
+		}
+		.player-select::after {
+			content: '';
+			position: absolute;
+			inset: 0;
+			border-radius: 50%;
+			box-shadow: 0 0 14px 0 white;
+		}
+	}
+}
+.result {
+	inset: 0;
+	z-index: 10;
+	display: none;
+	position: fixed;
+	align-items: center;
+	flex-direction: column;
+	justify-content: center;
+	background-color: rgba(0, 0, 0, 0.85);
+	.score-title {
+		font-size: 8rem;
+	}
+	.score-cnt {
+		font-size: 6rem;
+	}
+}
+.score-container {
+	position: fixed;
+	padding: 2rem;
+}
