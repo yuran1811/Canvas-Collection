@@ -1,4 +1,4 @@
-const container = document.getElementById('container');
+const container = document.querySelector('#container');
 const circles = [];
 const ROW = 15;
 const COL = 15;

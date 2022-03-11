@@ -20,8 +20,16 @@
 4.  [**Ripple**](./Inspire/Ripple/index.html)
 5.  [**Yin Yang**](./Inspire/YinYang/index.html)
 
-#### Need server
+### Need server
 
 1. [**Sine Waves**](./Inspire/SineWaves/index.html)
 2. Three JS
     - [**Space Field**](./Inspire/ThreeJS/SpaceField/)
+
+### Upcoming Games
+
+-   Rock - Paper - Scissor
+-   Image Matching
+-   Whac-a-mole
+-   Breakout
+-   Caro
