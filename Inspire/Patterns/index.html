@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<style>
+			* {
+				font-family: 'Trebuchet MS', Helvetica, sans-serif;
+			}
+			body {
+				overflow: hidden;
+				padding: 0;
+				margin: 0;
+			}
+			.tool {
+				padding: 10px;
+				position: fixed;
+				top: 0;
+				left: 0;
+				display: flex;
+				flex-direction: column;
+				align-items: flex-start;
+				justify-content: center;
+			}
+			.tool * {
+				color: white;
+			}
+			.tool input {
+				width: 50px;
+				color: black;
+			}
+			.tool-item {
+				width: 150px;
+				display: flex;
+				flex-direction: row;
+				align-items: center;
+				justify-content: space-between;
+				margin: 4px;
+			}
+			.tool-item span {
+				padding: 3px;
+			}
+		</style>
+		<title>Patterns</title>
+	</head>
+	<body>
+		<div class="tool">
+			<div class="tool-item numVertex">
+				<span class="tool-title">Num vertex</span>
+				<input type="number" min="1" max="100" value="6" />
+			</div>
+			<div class="tool-item length">
+				<span class="tool-title">Length</span>
+				<input type="number" min="1" value="100" />
+			</div>
+			<div class="tool-item radius">
+				<span class="tool-title">Radius</span>
+				<input type="number" min="1" value="100" />
+			</div>
+			<div class="tool-item isRotate">
+				<span class="tool-title">Rotate</span>
+				<input type="checkbox" checked />
+			</div>
+		</div>
+		<canvas id="app"></canvas>
+		<script src="./index.js"></script>
+	</body>
+</html>
