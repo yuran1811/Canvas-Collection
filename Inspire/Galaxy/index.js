@@ -1,4 +1,4 @@
-const canvas = document.querySelector('#app');
+const canvas = document.querySelector('canvas');
 const c = canvas.getContext('2d');
 
 canvas.width = innerWidth;
@@ -44,7 +44,8 @@ class Particle {
 	}
 }
 
-let particles = [];
+const particles = [];
+
 const init = () => {
 	const newWidth = canvas.width + 500;
 	const newHeight = canvas.height + 1000;
@@ -90,11 +91,11 @@ init();
 animate();
 
 // Event Handle
-window.onkeydown = (e) => (mouseDown = e.key === ' ');
-window.onkeyup = () => (mouseDown = false);
-window.onmousedown = () => (mouseDown = true);
-window.onmouseup = () => (mouseDown = false);
-window.onresize = () => {
+onkeydown = (e) => (mouseDown = e.key === ' ');
+onkeyup = () => (mouseDown = false);
+onmousedown = () => (mouseDown = true);
+onmouseup = () => (mouseDown = false);
+onresize = () => {
 	canvas.width = innerWidth;
 	canvas.height = innerHeight;
 	c.restore();

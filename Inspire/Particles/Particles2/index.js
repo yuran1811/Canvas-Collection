@@ -1,4 +1,4 @@
-const canvas = document.querySelector('#app');
+const canvas = document.querySelector('canvas');
 const c = canvas.getContext('2d', { alpha: false });
 
 const NUM_PARTICLES = innerWidth / 40;
@@ -62,11 +62,12 @@ const mouse = {
 	y: undefined,
 };
 
-window.onmousemove = (e) => {
+onmousemove = (e) => {
 	mouse.x = e.clientX;
 	mouse.y = e.clientY;
 };
-window.onresize = () => {
+
+onresize = () => {
 	c.save();
 	canvas.width = innerWidth;
 	canvas.height = innerHeight;
@@ -89,14 +90,13 @@ const init = () => {
 
 const animation = () => {
 	requestAnimationFrame(animation);
+
 	c.clearRect(0, 0, innerWidth, innerHeight);
 
 	particles.forEach((item, index) => {
 		item.update();
-		particles.slice(index).forEach((adj) => drawEdges(item, adj));
-	});
-	particles.forEach((item) => {
 		drawEdges(item, mouse);
+		particles.slice(index).forEach((adj) => drawEdges(item, adj));
 	});
 };
 

@@ -1,17 +1,21 @@
 const canvas = document.querySelector('canvas');
-const ctx = canvas.getContext('2d');
+const c = canvas.getContext('2d');
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+canvas.width = innerWidth;
+canvas.height = innerHeight;
 
 const colors = ['#ffa400', '#3D6EF7', '#ff6bcb', '#e74c3c', '#20E3B2'];
 const mouse = {
-	x: window.innerWidth / 2,
-	y: window.innerHeight / 2,
+	x: innerWidth / 2,
+	y: innerHeight / 2,
 };
+const numParticles = 30;
+const particles = [];
 
-const partcilesCount = 30;
-let particles;
+onmousemove = (e) => {
+	mouse.x = e.clientX;
+	mouse.y = e.clientY;
+};
 
 class Particle {
 	constructor(x, y, radius, color, velocity) {
@@ -21,51 +25,49 @@ class Particle {
 		this.color = color;
 		this.velocity = velocity;
 		this.ttl = 200;
+	}
 
-		this.draw = () => {
-			ctx.beginPath();
-			ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
-			ctx.fillStyle = this.color;
-			ctx.fill();
-			ctx.closePath();
-		};
+	draw() {
+		c.beginPath();
+		c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+		c.fillStyle = this.color;
+		c.fill();
+		c.closePath();
+	}
 
-		this.update = () => {
-			this.draw();
-			this.x += this.velocity.x;
-			this.y += this.velocity.y;
-			this.ttl--;
-		};
+	update() {
+		this.draw();
+		this.x += this.velocity.x;
+		this.y += this.velocity.y;
+		this.ttl--;
 	}
 }
 
-const getRandColor = (colors) => {
-	return colors[Math.floor(Math.random() * colors.length)];
-};
+const getRandColor = (colors) =>
+	colors[Math.floor(Math.random() * colors.length)];
 
 const init = () => {
-	particles = [];
-	for (let index = 0; index < partcilesCount; index++) {
-		const radians = (Math.PI * 2) / partcilesCount;
-		const x = canvas.width / 2;
-		const y = canvas.height / 2;
+	for (let idx = 0; idx < numParticles; idx++) {
+		const radians = (Math.PI * 2) / numParticles;
+		const x = innerWidth / 2;
+		const y = innerHeight / 2;
 		const velocity = {
-			x: Math.cos(radians * index),
-			y: Math.sin(radians * index),
+			x: Math.cos(radians * idx),
+			y: Math.sin(radians * idx),
 		};
 		particles.push(new Particle(x, y, 5, getRandColor(colors), velocity));
 	}
 };
 
-const generateCircles = () => {
-	setTimeout(generateCircles, 200);
-	for (let index = 0; index < partcilesCount; index++) {
-		const radians = (Math.PI * 2) / partcilesCount;
+const generate = () => {
+	setTimeout(generate, 200);
+	for (let idx = 0; idx < numParticles; idx++) {
+		const radians = (Math.PI * 2) / numParticles;
 		const x = mouse.x;
 		const y = mouse.y;
 		const velocity = {
-			x: Math.cos(radians * index),
-			y: Math.sin(radians * index),
+			x: Math.cos(radians * idx),
+			y: Math.sin(radians * idx),
 		};
 		particles.push(new Particle(x, y, 5, getRandColor(colors), velocity));
 	}
@@ -73,8 +75,9 @@ const generateCircles = () => {
 
 const animate = () => {
 	requestAnimationFrame(animate);
-	ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-	ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+	c.fillStyle = 'rgba(0, 0, 0, 0.05)';
+	c.fillRect(0, 0, canvas.width, canvas.height);
 
 	particles.forEach((item, index) => {
 		item.ttl === 0 && particles.splice(index, 1);
@@ -84,9 +87,4 @@ const animate = () => {
 
 init();
 animate();
-generateCircles();
-
-window.addEventListener('mousemove', (e) => {
-	mouse.x = e.clientX;
-	mouse.y = e.clientY;
-});
+generate();

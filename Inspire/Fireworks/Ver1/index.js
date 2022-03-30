@@ -1,4 +1,4 @@
-const canvas = document.querySelector('#app');
+const canvas = document.querySelector('canvas');
 const c = canvas.getContext('2d');
 
 canvas.width = innerWidth;
@@ -23,8 +23,10 @@ const colorsLth = colors.length;
 const numParticles = 400;
 const onePiece = (Math.PI * 2) / numParticles;
 
-const gravity = 0.03;
-const friction = 0.99;
+const GRAVITY = 0.03;
+const FRICTION = 0.99;
+
+const particles = [];
 
 // Objects
 class Particle {
@@ -39,9 +41,9 @@ class Particle {
 
 	draw() {
 		c.save();
-		c.globalAlpha = this.time;
 		c.beginPath();
 		c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+		c.globalAlpha = this.time;
 		c.fillStyle = this.color;
 		c.fill();
 		c.closePath();
@@ -50,32 +52,30 @@ class Particle {
 
 	update() {
 		this.draw();
-		this.velocity.x *= friction;
-		this.velocity.y *= friction;
-		this.velocity.y += gravity;
+		this.velocity.x *= FRICTION;
+		this.velocity.y *= FRICTION;
+		this.velocity.y += GRAVITY;
 		this.x += this.velocity.x;
 		this.y += this.velocity.y;
 		this.time -= 0.005;
 	}
 }
 
-let particles = [];
-
 const animate = () => {
 	requestAnimationFrame(animate);
 
-	c.fillStyle = `rgba(0, 0, 0, 0.05)`;
+	c.fillStyle = `rgba(0, 0, 0, 0.08)`;
 	c.fillRect(0, 0, canvas.width, canvas.height);
 
-	particles.forEach((particle, index) => {
+	particles.forEach((particle, idx) => {
 		if (particle.time > 0) particle.update();
-		else particles.splice(index, 1);
+		else particles.splice(idx, 1);
 	});
 };
 animate();
 
 // Event Handle
-window.onclick = (e) => {
+onclick = (e) => {
 	mouse.x = e.clientX;
 	mouse.y = e.clientY;
 
@@ -83,7 +83,6 @@ window.onclick = (e) => {
 		const { x, y } = mouse;
 		const color = colors[Math.floor(Math.random() * colorsLth)];
 		const radius = 3;
-
 		const velocity = {
 			x: Math.cos(onePiece * i) * Math.random() * 7,
 			y: Math.sin(onePiece * i) * Math.random() * 7,
@@ -92,7 +91,9 @@ window.onclick = (e) => {
 		particles.push(new Particle(x, y, radius, color, velocity));
 	}
 };
-window.onresize = () => {
+
+onresize = () => {
+	c.save();
 	canvas.width = innerWidth;
 	canvas.height = innerHeight;
 	c.restore();

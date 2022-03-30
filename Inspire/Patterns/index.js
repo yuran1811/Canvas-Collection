@@ -2,7 +2,7 @@ const numVertexEle = document.querySelector('.tool-item.numVertex input');
 const isRotateEle = document.querySelector('.tool-item.isRotate input');
 const radiusEle = document.querySelector('.tool-item.radius input');
 const lengthEle = document.querySelector('.tool-item.length input');
-const canvas = document.querySelector('#app');
+const canvas = document.querySelector('canvas');
 const c = canvas.getContext('2d');
 
 canvas.height = innerHeight;
@@ -84,6 +84,8 @@ const reset = () => {
 	c.fillStyle = `rgba(0, 0, 0, 1)`;
 	c.fillRect(0, 0, innerWidth, innerHeight);
 
+	centroid.x = mouse.x;
+	centroid.y = mouse.y;
 	centroid.rotate(isRotateEle.checked);
 	centroid.draw();
 };
@@ -106,6 +108,8 @@ onresize = () => {
 	c.save();
 	canvas.width = innerWidth;
 	canvas.height = innerHeight;
+	mouse.x = innerWidth / 2;
+	mouse.y = innerHeight / 2;
 	c.restore();
 };
 

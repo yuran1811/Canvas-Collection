@@ -1,4 +1,4 @@
-const canvas = document.querySelector('#app');
+const canvas = document.querySelector('canvas');
 const c = canvas.getContext('2d');
 
 canvas.height = innerHeight;
@@ -30,8 +30,10 @@ class Particle {
 
 	update() {
 		this.x += this.velocity.x;
-		const xDistance = mouse.x - this.x;
-		const yDistance = mouse.y - this.y;
+		const dist = {
+			x: mouse.x - this.x,
+			y: mouse.y - this.y,
+		};
 		const originalRadius = this.originalRadius;
 		this.y += this.velocity.y;
 
@@ -42,18 +44,18 @@ class Particle {
 			this.velocity.y *= -1;
 
 		if (
-			xDistance < 50 &&
-			xDistance > -50 &&
+			dist.x < 50 &&
+			dist.x > -50 &&
 			this.radius < maxRadius &&
-			yDistance < 50 &&
-			yDistance > -50
+			dist.y < 50 &&
+			dist.y > -50
 		) {
 			this.radius += 2;
 		} else if (
-			(xDistance >= 50 && originalRadius < this.radius) ||
-			(xDistance <= -50 && originalRadius < this.radius) ||
-			(yDistance >= 50 && originalRadius < this.radius) ||
-			(yDistance <= -50 && originalRadius < this.radius)
+			(dist.x >= 50 && originalRadius < this.radius) ||
+			(dist.x <= -50 && originalRadius < this.radius) ||
+			(dist.y >= 50 && originalRadius < this.radius) ||
+			(dist.y <= -50 && originalRadius < this.radius)
 		) {
 			this.radius -= 2;
 		}
@@ -71,12 +73,12 @@ const mouse = {
 	y: undefined,
 };
 
-window.onmousemove = (e) => {
+onmousemove = (e) => {
 	mouse.x = e.clientX;
 	mouse.y = e.clientY;
 };
 
-window.onresize = () => {
+onresize = () => {
 	c.save();
 	canvas.width = innerWidth;
 	canvas.height = innerHeight;
@@ -94,8 +96,10 @@ const init = () => {
 
 const animation = () => {
 	requestAnimationFrame(animation);
+
 	c.fillStyle = `rgba(255, 255, 255, 0.4)`;
 	c.fillRect(0, 0, innerWidth, innerHeight);
+
 	myCircle.update();
 	particles.forEach((item) => item.update());
 };

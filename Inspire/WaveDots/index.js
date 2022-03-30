@@ -3,6 +3,8 @@ const circles = [];
 const ROW = 15;
 const COL = 15;
 
+const timeOutIDs = [];
+
 const genBoard = () => {
 	for (let i = 0; i < COL; i++) {
 		circles[i] = [];
@@ -17,7 +19,22 @@ const genBoard = () => {
 
 const dotEventHandle = () => {
 	circles.forEach((col, i) =>
-		col.forEach((circle, j) => (circle.onclick = () => growCircles(i, j)))
+		col.forEach((circle, j) => {
+			circle.onclick = () => growCircles(i, j);
+			circle.onmouseover = () => {
+				timeOutIDs.push({
+					idx: circle,
+					id: setTimeout(() => {
+						growCircles(i, j);
+					}, 20),
+				});
+			};
+			circle.onmouseout = () => {
+				timeOutIDs.forEach((item) => {
+					if (item.idx === circle) clearTimeout(item.id);
+				});
+			};
+		})
 	);
 };
 
