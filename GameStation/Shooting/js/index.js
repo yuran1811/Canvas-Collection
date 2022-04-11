@@ -60,6 +60,32 @@ canvas.width = innerWidth;
 canvas.height = innerHeight;
 
 // <--=== Object
+class FlashShield {
+	constructor(x, y, radius, color) {
+		this.x = x;
+		this.y = y;
+		this.maxRadius = radius * 5;
+		this.radius = radius;
+		this.color = color;
+		this.speed = 2;
+	}
+
+	draw() {
+		c.beginPath();
+		c.fillStyle = this.color;
+		c.strokeStyle = this.color;
+		c.lineWidth = 5;
+		c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+		c.stroke();
+		c.closePath();
+	}
+
+	update() {
+		this.draw();
+		if (this.maxRadius > this.radius) this.radius += this.speed;
+	}
+}
+
 class Player {
 	constructor(x, y, radius, color) {
 		this.x = x;
@@ -286,7 +312,7 @@ const animation = () => {
 		// removeFromEdge(enemies, index, enemy.x, enemy.y);
 
 		const dist = Math.hypot(player.x - enemy.x, player.y - enemy.y);
-		if (dist - enemy.radius - player.radius < 1) endGame();
+		if (dist - enemy.radius - player.radius <= 0.5) endGame();
 
 		projectiles.forEach((pjtile, pjIndex) => {
 			if (pjtile.isEnemy) {
@@ -313,7 +339,7 @@ const animation = () => {
 			}
 
 			const dist = Math.hypot(pjtile.x - enemy.x, pjtile.y - enemy.y);
-			if (dist - enemy.radius - pjtile.radius < 1) {
+			if (dist - enemy.radius - pjtile.radius <= 0.5) {
 				for (let i = 0; i < 8; i++) {
 					particles.push(
 						new Particle(pjtile.x, pjtile.y, 3, enemy.color, {
@@ -447,3 +473,224 @@ playerItems.forEach((item, index) => {
 	};
 });
 // Event Handle ===-->
+
+/* 
+const canvas = document.querySelector('canvas');
+const c = canvas.getContext('2d');
+
+canvas.width = innerWidth;
+canvas.height = innerHeight;
+
+const mouse = {
+    x: innerWidth / 2,
+    y: innerHeight / 2,
+}
+
+const flashShields = [];
+const projectiles = [];
+
+const calcDist = (a, b) => (a.x - b.x) ** 2 + (a.y - b.y) ** 2;
+
+class Projectile {
+    constructor(x, y, radius, color, v) {
+        this.x = x;
+        this.y = y;
+        this.radius = radius;
+        this.color = color;
+        this.v = v;
+    }
+
+    draw() {
+        c.beginPath();
+        c.fillStyle = this.color;
+        c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+        c.fill();
+        c.closePath();
+    }
+
+    update() {
+        this.draw();
+        this.x += this.v.x;
+        this.y += this.v.y;
+    }
+}
+
+class FlashShield {
+    constructor(x, y, radius, color) {
+        this.x = x;
+        this.y = y;
+        this.maxRadius = radius * 5;
+        this.radius = radius;
+        this.color = color;
+        this.speed = 2;
+    }
+
+    draw() {
+        c.beginPath();
+        c.fillStyle = this.color;
+        c.strokeStyle = this.color;
+        c.lineWidth = 5;
+        c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+        c.stroke();
+        c.closePath();
+    }
+
+    update() {
+        this.draw();
+        if (this.maxRadius > this.radius)
+            this.radius += this.speed;
+    }
+}
+
+class User {
+    constructor(x, y, radius, color) {
+        this.x = x;
+        this.y = y;
+        this.fixedRadius = radius;
+        this.newRadius = 0;
+        this.radius = radius;
+        this.color = color;
+        this.v = {x: 0, y: 0}
+        this.speedTele = 1;
+
+        this.cd = {
+            flashShield: {
+                cdTime: 2,
+                nowCd: 0,
+                speedDec: 0.05,
+            },
+        }
+    }
+
+    draw() {
+        c.beginPath();
+        c.fillStyle = this.color;
+        c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+        c.fill();
+        c.closePath();
+    }
+
+    moveToXY({x, y}) {
+        this.move = 1;
+        this.radius -= this.speedTele;
+        this.newRadius += this.speedTele;
+
+        this.draw();
+
+        c.beginPath();
+        c.fillStyle = this.color;
+        c.arc(x, y, this.newRadius, 0, Math.PI * 2, false);
+        c.fill();
+        c.closePath();
+    }
+
+    dashing() {
+        if (calcDist(this.dashPos, this) <= 5 ** 2) {
+            this.x = this.dashPos.x;
+            this.y = this.dashPos.y;
+            this.isDash = 0;
+        } else {
+            this.x += this.dash.x;
+            this.y += this.dash.y;
+        }
+    }
+
+    update() {
+        this.draw();
+        if (this.isDash)
+            this.dashing();
+        else {
+            this.x += this.v.x;
+            this.y += this.v.y;
+        }
+
+        if (this.cd.flashShield.nowCd >= 0)
+            this.cd.flashShield.nowCd -= this.cd.flashShield.speedDec;
+
+        if (this.move) {
+            if (this.radius <= 0) {
+                this.radius = this.fixedRadius;
+                this.newRadius = 0;
+                this.move = 0;
+
+                this.x = this.movePos.x;
+                this.y = this.movePos.y;
+
+                flashShields.push(new FlashShield(this.x, this.y, this.radius, 'lightblue'));
+            } else {
+                this.moveToXY(this.movePos);
+            }
+        }
+    }
+}
+
+const hero = new User(mouse.x, mouse.y, 15, 'pink');
+
+const animation = () => {
+    requestAnimationFrame(animation);
+    c.fillStyle = 'rgba(0, 0, 0, 0.1)';
+    c.fillRect(0, 0, innerWidth, innerHeight);
+    hero.update();
+
+    flashShields.forEach((item, idx) => {
+        item.update();
+        if (item.maxRadius <= item.radius)
+            flashShields.splice(idx, 1);
+    })
+
+    projectiles.forEach((item, idx) => {
+        item.update();
+        if (item.x < 0 || item.x > innerWidth || item.y < 0 || item.y > innerHeight)
+            projectiles.splice(idx, 1);
+
+        projectiles.forEach((other, idx2) => {
+            if (other !== item && calcDist(item, other) <= 5 ** 2) {
+                projectiles.splice(idx2, 1);
+                projectiles.splice(idx, 1);
+            }
+        })
+    })
+}
+animation();
+
+oncontextmenu = (e) => {
+    e.preventDefault();
+    if (hero.cd.flashShield.nowCd <= 0) {
+        hero.move = 1;
+        hero.isDash = 0;
+        hero.cd.flashShield.nowCd = hero.cd.flashShield.cdTime;
+
+        hero.movePos = {
+            x: e.clientX,
+            y: e.clientY,
+        }
+    }
+}
+
+onclick = (e) => {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+
+    const angle = Math.atan2(e.clientY - hero.y, e.clientX - hero.x);
+    const v = {
+        x: Math.cos(angle) * 5,
+        y: Math.sin(angle) * 5,
+    }
+    projectiles.push(new Projectile(hero.x, hero.y, 5, 'white', v));
+}
+
+onkeydown = (e) => {
+    if (e.key === ' ') {
+        const angle = Math.atan2(mouse.y - hero.y, mouse.x- hero.x);
+        hero.isDash = 1;
+        hero.dashPos = {
+            x: mouse.x,
+            y: mouse.y,
+        }
+        hero.dash = {
+            x: Math.cos(angle) * 10,
+            y: Math.sin(angle) * 10,
+        }
+    }
+}
+*/

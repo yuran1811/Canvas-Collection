@@ -25,20 +25,23 @@
 	--yin-yang-background: black;
 	--yin-yang-color: rgb(210, 210, 210);
 }
+
 * {
 	user-select: none;
 	font-family: 'Patrick Hand', cursive;
 	-webkit-tap-highlight-color: transparent;
-	*::selection {
+	&::selection {
 		color: var(--background);
 		background-color: var(--color);
 	}
 }
+
 body {
 	background-color: var(--background);
 	color: var(--color);
-	margin: 0;
 	overflow: hidden;
+	margin: 0;
+
 	&.dark-theme {
 		--background: var(--dark-background);
 		--color: var(--dark-color);
@@ -73,13 +76,19 @@ canvas {
 	position: fixed;
 	display: none;
 	z-index: -1;
-	inset: 0;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
 }
+
 .container {
 	text-align: center;
+
 	.title {
 		font-size: 4rem;
 	}
+
 	.theme-list {
 		position: relative;
 		margin: auto;
@@ -111,6 +120,7 @@ canvas {
 			}
 		}
 	}
+
 	.main {
 		display: grid;
 		grid-template-columns: repeat(3, auto);
@@ -126,39 +136,25 @@ canvas {
 			width: 100px;
 		}
 	}
+
 	.turn {
 		margin: 4px auto 2px;
 	}
+
 	.restart {
 		position: relative;
-		display: inline-block;
-		border: 0px solid var(--color);
-		border-radius: 10px;
 		cursor: pointer;
-		font-size: 2rem;
 		padding: 5px;
-		transition: border-width 0.3s ease 0.15s;
+		font-size: 2rem;
+		border-radius: 10px;
+		display: inline-block;
+		border: 5px solid transparent;
+		transition: all 0.3s ease;
 		&:hover {
-			border-width: 5px;
-			&::after {
-				transform: scaleX(0);
-			}
-
+			border-color: var(--color);
 			.redo {
-				animation: spin 0.8s infinite ease 0.3s;
+				animation: spin 0.8s infinite ease;
 			}
-		}
-		&::after {
-			content: ' ';
-			background-color: var(--color);
-			position: absolute;
-			height: 5px;
-			width: 100%;
-			bottom: 0;
-			right: 0;
-			left: 0;
-			transform: scaleX(1);
-			transition: transform 0.2s ease;
 		}
 	}
 
@@ -170,7 +166,7 @@ canvas {
 				background-color: var(--color);
 			}
 		}
-		&.active:hover {
+		&.active {
 			background-color: var(--color);
 			color: var(--background);
 			&::after {
@@ -187,7 +183,7 @@ canvas {
 				background-color: var(--dark-color);
 			}
 		}
-		&.active:hover {
+		&.active {
 			background-color: var(--dark-color);
 			color: var(--dark-background);
 			&::after {
@@ -204,7 +200,7 @@ canvas {
 				background-color: var(--spring-color);
 			}
 		}
-		&.active:hover {
+		&.active {
 			background-color: var(--spring-color);
 			color: var(--spring-background);
 			&::after {
@@ -221,7 +217,7 @@ canvas {
 				background-color: var(--summer-color);
 			}
 		}
-		&.active:hover {
+		&.active {
 			background-color: var(--summer-color);
 			color: var(--summer-background);
 			&::after {
@@ -238,7 +234,7 @@ canvas {
 				background-color: var(--autumn-color);
 			}
 		}
-		&.active:hover {
+		&.active {
 			background-color: var(--autumn-color);
 			color: var(--autumn-background);
 			&::after {
@@ -246,53 +242,56 @@ canvas {
 			}
 		}
 	}
-
-	#winter:hover {
-		background-color: var(--winter-background);
-		border-color: var(--winter-background);
-		color: var(--winter-color);
+	#winter {
+		&:hover {
+			background-color: var(--winter-background);
+			border-color: var(--winter-background);
+			color: var(--winter-color);
+			&::after {
+				background-color: var(--winter-color);
+			}
+		}
+		&.active {
+			background-color: var(--winter-color);
+			color: var(--winter-background);
+			&::after {
+				background-color: var(--winter-background);
+			}
+		}
 	}
-	#winter:hover::after {
-		background-color: var(--winter-color);
+	#noel {
+		&:hover {
+			background-color: var(--noel-background);
+			border-color: var(--noel-background);
+			color: var(--noel-color);
+			&::after {
+				background-color: var(--noel-color);
+			}
+		}
+		&.active {
+			background-color: var(--noel-color);
+			color: var(--noel-background);
+			&::after {
+				background-color: var(--noel-background);
+			}
+		}
 	}
-	#winter.active:hover {
-		background-color: var(--winter-color);
-		color: var(--winter-background);
-	}
-	#winter.active:hover::after {
-		background-color: var(--winter-background);
-	}
-
-	#noel:hover {
-		background-color: var(--noel-background);
-		border-color: var(--noel-background);
-		color: var(--noel-color);
-	}
-	#noel:hover::after {
-		background-color: var(--noel-color);
-	}
-	#noel.active:hover {
-		background-color: var(--noel-color);
-		color: var(--noel-background);
-	}
-	#noel.active:hover::after {
-		background-color: var(--noel-background);
-	}
-
-	#yin-yang:hover {
-		background-color: var(--yin-yang-background);
-		border-color: var(--yin-yang-background);
-		color: var(--yin-yang-color);
-	}
-	#yin-yang:hover::after {
-		background-color: var(--yin-yang-color);
-	}
-	#yin-yang.active:hover {
-		background-color: var(--yin-yang-color);
-		color: var(--yin-yang-background);
-	}
-	#yin-yang.active:hover::after {
-		background-color: var(--yin-yang-background);
+	#yin-yang {
+		&:hover {
+			background-color: var(--yin-yang-background);
+			border-color: var(--yin-yang-background);
+			color: var(--yin-yang-color);
+			&::after {
+				background-color: var(--yin-yang-color);
+			}
+		}
+		&.active {
+			background-color: var(--yin-yang-color);
+			color: var(--yin-yang-background);
+			&::after {
+				background-color: var(--yin-yang-background);
+			}
+		}
 	}
 }
 

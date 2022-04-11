@@ -37,7 +37,10 @@ button {
 	background-color: black;
 	position: fixed;
 	z-index: 10;
-	inset: 0;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
 	display: flex;
 	align-items: center;
 	flex-direction: column;
@@ -65,14 +68,20 @@ button {
 		.player-select::after {
 			content: '';
 			position: absolute;
-			inset: 0;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
 			border-radius: 50%;
 			box-shadow: 0 0 14px 0 white;
 		}
 	}
 }
 .result {
-	inset: 0;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
 	z-index: 10;
 	display: none;
 	position: fixed;
