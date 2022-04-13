@@ -17,6 +17,13 @@ const colors = [
 ];
 const colorsLth = colors.length;
 const numParticles = 1500;
+const particles = [];
+
+let mouseDown = false;
+let speed = 0.0005;
+let radians = 0;
+let opacity = 1;
+let alpha = 1;
 
 // Objects
 class Particle {
@@ -44,8 +51,6 @@ class Particle {
 	}
 }
 
-const particles = [];
-
 const init = () => {
 	const newWidth = canvas.width + 500;
 	const newHeight = canvas.height + 1000;
@@ -59,19 +64,15 @@ const init = () => {
 	}
 };
 
-let mouseDown = false;
-let speed = 0.0005;
-let radians = 0;
-let opacity = 1;
-let alpha = 1;
-
 const animate = () => {
 	requestAnimationFrame(animate);
 
 	const updateAnimation = (reqOpacity, reqOpacityMulti, reqSpeed) => {
 		opacity += (reqOpacity - opacity) * reqOpacityMulti;
+		opacity = Math.max(opacity, 0.04);
 		c.fillStyle = `rgba(0, 0, 0, ${opacity})`;
 
+		// if (speed < 0.01)
 		speed += (reqSpeed - speed) * 0.01;
 		radians += speed;
 	};

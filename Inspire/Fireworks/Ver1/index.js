@@ -79,6 +79,8 @@ onclick = (e) => {
 	mouse.x = e.clientX;
 	mouse.y = e.clientY;
 
+	if (particles.length > numParticles * 2) return;
+
 	for (let i = 0; i < numParticles; i++) {
 		const { x, y } = mouse;
 		const color = colors[Math.floor(Math.random() * colorsLth)];
