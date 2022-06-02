@@ -7,6 +7,10 @@ const GRAVITY = 1.5;
 const canvas = document.querySelector('#app');
 const c = canvas.getContext('2d');
 
+const winContainer = document.querySelector('.win-container');
+const loseContainer = document.querySelector('.lose-container');
+const restartBtns = document.querySelectorAll('button.restart');
+
 const app = {
 	genericObjects: [],
 	platforms: [],
@@ -14,6 +18,7 @@ const app = {
 	player: undefined,
 	scrollOffset: 0,
 	animationID: undefined,
+	winCondition: undefined,
 
 	tools: {
 		randRange: ({ x, y }) => {
@@ -41,7 +46,7 @@ const app = {
 	},
 
 	checkWin() {
-		return this.scrollOffset >= SPACE * NUM_BLOCK - MARGIN / 3;
+		return this.scrollOffset >= this.winCondition - PLATFORM_WIDTH / 2;
 	},
 	checkLose() {
 		return this.player.position.y + this.player.height > innerHeight;
@@ -54,6 +59,11 @@ const app = {
 		this.genericObjects.forEach((_) => _.draw());
 		this.platforms.forEach((_) => _.draw());
 		this.player.update();
+	},
+
+	run() {
+		init();
+		animation();
 	},
 };
 
@@ -132,6 +142,9 @@ class Flag {
 const init = () => {
 	app.initValue();
 
+	winContainer.classList.add('hide');
+	loseContainer.classList.add('hide');
+
 	let lastPlatform = { x: 200, y: 350 };
 	let lastGenericObj = { x: 0, y: 0 };
 	for (let i = 0; i < NUM_BLOCK; i++) {
@@ -140,7 +153,11 @@ const init = () => {
 
 		app.genericObjects.push(new GenericObject(lastGenericObj));
 		app.platforms.push(new Platform(lastPlatform));
+
+		app.winCondition = lastPlatform.x;
 	}
+
+	app.winCondition -= app.platforms[0].position.x;
 };
 
 const animation = () => {
@@ -198,12 +215,19 @@ const animation = () => {
 			app.player.velocity.y = 0;
 	});
 
-	if (app.checkWin()) cancelAnimationFrame(app.animationID);
-	if (app.checkLose()) init();
+	if (app.checkWin()) {
+		winContainer.classList.remove('hide');
+		cancelAnimationFrame(app.animationID);
+	}
+	if (app.checkLose()) {
+		loseContainer.classList.remove('hide');
+		cancelAnimationFrame(app.animationID);
+	}
 };
 
-init();
-animation();
+app.run();
+
+restartBtns.forEach((_) => (_.onclick = app.run));
 
 oncontextmenu = (e) => e.preventDefault();
 onkeydown = ({ key }) => {
