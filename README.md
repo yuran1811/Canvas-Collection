@@ -7,10 +7,11 @@
 1.  [**Shooting**](./GameStation/Shooting)
 2.  [**Go Hero**](./GameStation/GoHero)
 3.  [**Tic Tac Toe**](./GameStation/TicTacToe)
+4.  [**Hop**](./GameStation/Hop) (Upcoming)
 
 ### [**Inspire Projects**](./Inspire/)
 
-1.  Fire Work:
+1.  Fireworks:
     -   [**Ver 1**](./Inspire/Fireworks/Ver1)
     -   [**Ver 2**](./Inspire/Fireworks/Ver2)
 2.  [**Galaxy**](./Inspire/Galaxy)
@@ -20,6 +21,7 @@
 4.  [**Patterns**](./Inspire/Patterns)
 5.  [**Ripple**](./Inspire/Ripple)
 6.  [**Yin Yang**](./Inspire/YinYang)
+7.  [**Wave Dots**](./Inspire/WaveDots)
 
 ### Need server
 
