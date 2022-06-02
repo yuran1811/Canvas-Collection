@@ -31,6 +31,18 @@ body {
 	position: fixed;
 	z-index: 1;
 
+	.score {
+		display: block;
+		height: 100px;
+		font-size: 4rem;
+		position: relative;
+		top: 0;
+		left: 0;
+		padding: 0.7rem 0 0 1.5rem;
+		z-index: 3;
+		color: white;
+	}
+
 	.win-container,
 	.lose-container {
 		@extend %fullScreen;
@@ -79,6 +91,17 @@ body {
 			@extend %fullScreen;
 			background: rgba(0, 0, 0, 0.445);
 			z-index: -1;
+		}
+	}
+
+	.win-container {
+		.title {
+			color: #18fb86;
+		}
+	}
+	.lose-container {
+		.title {
+			color: #ff7070;
 		}
 	}
 }
