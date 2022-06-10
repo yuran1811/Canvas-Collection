@@ -20,8 +20,9 @@
     -   [**Particles Connect**](./Inspire/Particles/Particles2)
 4.  [**Patterns**](./Inspire/Patterns)
 5.  [**Ripple**](./Inspire/Ripple)
-6.  [**Yin Yang**](./Inspire/YinYang)
-7.  [**Wave Dots**](./Inspire/WaveDots)
+6.  [**Snowy**](./Inspire/Snowy)
+7.  [**Yin Yang**](./Inspire/YinYang)
+8.  [**Wave Dots**](./Inspire/WaveDots)
 
 ### Need server
 

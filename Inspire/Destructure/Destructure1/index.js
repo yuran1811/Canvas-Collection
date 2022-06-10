@@ -32,11 +32,7 @@ class Tree {
 	}
 
 	init() {
-		TweenLite.to(tree.branch, 1.5, {
-			x: 0,
-			y: 0,
-			ease: Power4.easeInOut,
-		});
+		TweenLite.to(tree.branch, 1.5, { x: 0, y: 0, ease: Power4.easeInOut });
 
 		setTimeout(() => {
 			tree.loop = true;

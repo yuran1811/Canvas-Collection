@@ -54,6 +54,7 @@ class Particle {
 const init = () => {
 	const newWidth = canvas.width + 500;
 	const newHeight = canvas.height + 1000;
+	
 	for (let i = 0; i < numParticles; i++) {
 		const x = Math.random() * newWidth - newWidth / 2;
 		const y = Math.random() * newHeight - newHeight / 2;
