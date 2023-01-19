@@ -1,302 +1,302 @@
 @import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap');
 
 :root {
-	--background: rgb(235, 235, 235);
-	--color: black;
+  --background: rgb(235, 235, 235);
+  --color: black;
 
-	--dark-background: black;
-	--dark-color: rgb(235, 235, 235);
+  --dark-background: black;
+  --dark-color: rgb(235, 235, 235);
 
-	--spring-background: rgba(255, 174, 212, 0.781);
-	--spring-color: rgb(143, 22, 38);
+  --spring-background: rgba(255, 174, 212, 0.781);
+  --spring-color: rgb(143, 22, 38);
 
-	--summer-background: rgba(255, 235, 52, 0.849);
-	--summer-color: rgb(185, 105, 0);
+  --summer-background: rgba(255, 235, 52, 0.849);
+  --summer-color: rgb(185, 105, 0);
 
-	--autumn-background: rgb(227, 219, 154);
-	--autumn-color: rgb(242, 149, 65);
+  --autumn-background: rgb(227, 219, 154);
+  --autumn-color: rgb(242, 149, 65);
 
-	--winter-background: rgba(202, 243, 255, 0.815);
-	--winter-color: rgb(22, 115, 143);
+  --winter-background: rgba(202, 243, 255, 0.815);
+  --winter-color: rgb(22, 115, 143);
 
-	--noel-background: rgb(145, 0, 0);
-	--noel-color: rgb(108, 212, 171);
+  --noel-background: rgb(145, 0, 0);
+  --noel-color: rgb(108, 212, 171);
 
-	--yin-yang-background: black;
-	--yin-yang-color: rgb(210, 210, 210);
+  --yin-yang-background: black;
+  --yin-yang-color: rgb(210, 210, 210);
 }
 
 * {
-	user-select: none;
-	font-family: 'Patrick Hand', cursive;
-	-webkit-tap-highlight-color: transparent;
-	&::selection {
-		color: var(--background);
-		background-color: var(--color);
-	}
+  user-select: none;
+  font-family: 'Patrick Hand', cursive;
+  -webkit-tap-highlight-color: transparent;
+  &::selection {
+    color: var(--background);
+    background-color: var(--color);
+  }
 }
 
 body {
-	background-color: var(--background);
-	color: var(--color);
-	overflow: hidden;
-	margin: 0;
+  background-color: var(--background);
+  color: var(--color);
+  overflow: hidden;
+  margin: 0;
 
-	&.dark-theme {
-		--background: var(--dark-background);
-		--color: var(--dark-color);
-	}
-	&.spring-theme {
-		--background: var(--spring-background);
-		--color: var(--spring-color);
-	}
-	&.summer-theme {
-		--background: var(--summer-background);
-		--color: var(--summer-color);
-	}
-	&.autumn-theme {
-		--background: var(--autumn-background);
-		--color: var(--autumn-color);
-	}
-	&.winter-theme {
-		--background: var(--winter-background);
-		--color: var(--winter-color);
-	}
-	&.noel-theme {
-		--background: var(--noel-background);
-		--color: var(--noel-color);
-	}
-	&.yin-yang-theme {
-		--background: var(--yin-yang-background);
-		--color: var(--yin-yang-color);
-	}
+  &.dark-theme {
+    --background: var(--dark-background);
+    --color: var(--dark-color);
+  }
+  &.spring-theme {
+    --background: var(--spring-background);
+    --color: var(--spring-color);
+  }
+  &.summer-theme {
+    --background: var(--summer-background);
+    --color: var(--summer-color);
+  }
+  &.autumn-theme {
+    --background: var(--autumn-background);
+    --color: var(--autumn-color);
+  }
+  &.winter-theme {
+    --background: var(--winter-background);
+    --color: var(--winter-color);
+  }
+  &.noel-theme {
+    --background: var(--noel-background);
+    --color: var(--noel-color);
+  }
+  &.yin-yang-theme {
+    --background: var(--yin-yang-background);
+    --color: var(--yin-yang-color);
+  }
 }
 
 canvas {
-	position: fixed;
-	display: none;
-	z-index: -1;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
+  position: fixed;
+  display: none;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
 .container {
-	text-align: center;
+  text-align: center;
 
-	.title {
-		font-size: 4rem;
-	}
+  .title {
+    font-size: 4rem;
+  }
 
-	.theme-list {
-		position: relative;
-		margin: auto;
-		max-width: 500px;
-		min-width: 200px;
-		display: flex;
-		flex-wrap: wrap;
-		align-items: center;
-		justify-content: center;
-		.theme-ico {
-			position: relative;
-			border: 2px solid;
-			font-size: 1.5rem;
-			padding: 1px 5px 3px;
-			cursor: pointer;
-			margin: 7px 10px;
-			&:hover::after {
-				transform: scaleX(1);
-			}
-			&::after {
-				content: ' ';
-				position: absolute;
-				height: 3.2px;
-				bottom: 3px;
-				right: 2px;
-				left: 2px;
-				transform: scaleX(0);
-				transition: all 0.3s ease;
-			}
-		}
-	}
+  .theme-list {
+    position: relative;
+    margin: auto;
+    max-width: 500px;
+    min-width: 200px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    .theme-ico {
+      position: relative;
+      border: 2px solid;
+      font-size: 1.5rem;
+      padding: 1px 5px 3px;
+      cursor: pointer;
+      margin: 7px 10px;
+      &:hover::after {
+        transform: scaleX(1);
+      }
+      &::after {
+        content: ' ';
+        position: absolute;
+        height: 3.2px;
+        bottom: 3px;
+        right: 2px;
+        left: 2px;
+        transform: scaleX(0);
+        transition: all 0.3s ease;
+      }
+    }
+  }
 
-	.main {
-		display: grid;
-		grid-template-columns: repeat(3, auto);
-		margin: 15px auto;
-		width: 306px;
-		.cell {
-			box-shadow: 0 0 0 1px var(--color);
-			border: 2px solid var(--color);
-			line-height: 100px;
-			font-size: 5.7rem;
-			cursor: pointer;
-			height: 100px;
-			width: 100px;
-		}
-	}
+  .main {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    margin: 15px auto;
+    width: 306px;
+    .cell {
+      box-shadow: 0 0 0 1px var(--color);
+      border: 2px solid var(--color);
+      line-height: 100px;
+      font-size: 5.7rem;
+      cursor: pointer;
+      height: 100px;
+      width: 100px;
+    }
+  }
 
-	.turn {
-		margin: 4px auto 2px;
-	}
+  .turn {
+    margin: 4px auto 2px;
+  }
 
-	.restart {
-		position: relative;
-		cursor: pointer;
-		padding: 5px;
-		font-size: 2rem;
-		border-radius: 10px;
-		display: inline-block;
-		border: 5px solid transparent;
-		transition: all 0.3s ease;
-		&:hover {
-			border-color: var(--color);
-			.redo {
-				animation: spin 0.8s infinite ease;
-			}
-		}
-	}
+  .restart {
+    position: relative;
+    cursor: pointer;
+    padding: 5px;
+    font-size: 2rem;
+    border-radius: 10px;
+    display: inline-block;
+    border: 5px solid transparent;
+    transition: all 0.3s ease;
+    &:hover {
+      border-color: var(--color);
+      .redo {
+        animation: spin 0.8s infinite ease;
+      }
+    }
+  }
 
-	#light {
-		&:hover {
-			background-color: var(--background);
-			color: var(--color);
-			&::after {
-				background-color: var(--color);
-			}
-		}
-		&.active {
-			background-color: var(--color);
-			color: var(--background);
-			&::after {
-				background-color: var(--background);
-			}
-		}
-	}
-	#dark {
-		&:hover {
-			background-color: var(--dark-background);
-			border-color: var(--dark-background);
-			color: var(--dark-color);
-			&::after {
-				background-color: var(--dark-color);
-			}
-		}
-		&.active {
-			background-color: var(--dark-color);
-			color: var(--dark-background);
-			&::after {
-				background-color: var(--dark-background);
-			}
-		}
-	}
-	#spring {
-		&:hover {
-			background-color: var(--spring-background);
-			border-color: var(--spring-background);
-			color: var(--spring-color);
-			&::after {
-				background-color: var(--spring-color);
-			}
-		}
-		&.active {
-			background-color: var(--spring-color);
-			color: var(--spring-background);
-			&::after {
-				background-color: var(--spring-background);
-			}
-		}
-	}
-	#summer {
-		&:hover {
-			background-color: var(--summer-background);
-			border-color: var(--summer-background);
-			color: var(--summer-color);
-			&::after {
-				background-color: var(--summer-color);
-			}
-		}
-		&.active {
-			background-color: var(--summer-color);
-			color: var(--summer-background);
-			&::after {
-				background-color: var(--summer-background);
-			}
-		}
-	}
-	#autumn {
-		&:hover {
-			background-color: var(--autumn-background);
-			border-color: var(--autumn-background);
-			color: var(--autumn-color);
-			&::after {
-				background-color: var(--autumn-color);
-			}
-		}
-		&.active {
-			background-color: var(--autumn-color);
-			color: var(--autumn-background);
-			&::after {
-				background-color: var(--autumn-background);
-			}
-		}
-	}
-	#winter {
-		&:hover {
-			background-color: var(--winter-background);
-			border-color: var(--winter-background);
-			color: var(--winter-color);
-			&::after {
-				background-color: var(--winter-color);
-			}
-		}
-		&.active {
-			background-color: var(--winter-color);
-			color: var(--winter-background);
-			&::after {
-				background-color: var(--winter-background);
-			}
-		}
-	}
-	#noel {
-		&:hover {
-			background-color: var(--noel-background);
-			border-color: var(--noel-background);
-			color: var(--noel-color);
-			&::after {
-				background-color: var(--noel-color);
-			}
-		}
-		&.active {
-			background-color: var(--noel-color);
-			color: var(--noel-background);
-			&::after {
-				background-color: var(--noel-background);
-			}
-		}
-	}
-	#yin-yang {
-		&:hover {
-			background-color: var(--yin-yang-background);
-			border-color: var(--yin-yang-background);
-			color: var(--yin-yang-color);
-			&::after {
-				background-color: var(--yin-yang-color);
-			}
-		}
-		&.active {
-			background-color: var(--yin-yang-color);
-			color: var(--yin-yang-background);
-			&::after {
-				background-color: var(--yin-yang-background);
-			}
-		}
-	}
+  #light {
+    &:hover {
+      background-color: var(--background);
+      color: var(--color);
+      &::after {
+        background-color: var(--color);
+      }
+    }
+    &.active {
+      background-color: var(--color);
+      color: var(--background);
+      &::after {
+        background-color: var(--background);
+      }
+    }
+  }
+  #dark {
+    &:hover {
+      background-color: var(--dark-background);
+      border-color: var(--dark-background);
+      color: var(--dark-color);
+      &::after {
+        background-color: var(--dark-color);
+      }
+    }
+    &.active {
+      background-color: var(--dark-color);
+      color: var(--dark-background);
+      &::after {
+        background-color: var(--dark-background);
+      }
+    }
+  }
+  #spring {
+    &:hover {
+      background-color: var(--spring-background);
+      border-color: var(--spring-background);
+      color: var(--spring-color);
+      &::after {
+        background-color: var(--spring-color);
+      }
+    }
+    &.active {
+      background-color: var(--spring-color);
+      color: var(--spring-background);
+      &::after {
+        background-color: var(--spring-background);
+      }
+    }
+  }
+  #summer {
+    &:hover {
+      background-color: var(--summer-background);
+      border-color: var(--summer-background);
+      color: var(--summer-color);
+      &::after {
+        background-color: var(--summer-color);
+      }
+    }
+    &.active {
+      background-color: var(--summer-color);
+      color: var(--summer-background);
+      &::after {
+        background-color: var(--summer-background);
+      }
+    }
+  }
+  #autumn {
+    &:hover {
+      background-color: var(--autumn-background);
+      border-color: var(--autumn-background);
+      color: var(--autumn-color);
+      &::after {
+        background-color: var(--autumn-color);
+      }
+    }
+    &.active {
+      background-color: var(--autumn-color);
+      color: var(--autumn-background);
+      &::after {
+        background-color: var(--autumn-background);
+      }
+    }
+  }
+  #winter {
+    &:hover {
+      background-color: var(--winter-background);
+      border-color: var(--winter-background);
+      color: var(--winter-color);
+      &::after {
+        background-color: var(--winter-color);
+      }
+    }
+    &.active {
+      background-color: var(--winter-color);
+      color: var(--winter-background);
+      &::after {
+        background-color: var(--winter-background);
+      }
+    }
+  }
+  #noel {
+    &:hover {
+      background-color: var(--noel-background);
+      border-color: var(--noel-background);
+      color: var(--noel-color);
+      &::after {
+        background-color: var(--noel-color);
+      }
+    }
+    &.active {
+      background-color: var(--noel-color);
+      color: var(--noel-background);
+      &::after {
+        background-color: var(--noel-background);
+      }
+    }
+  }
+  #yin-yang {
+    &:hover {
+      background-color: var(--yin-yang-background);
+      border-color: var(--yin-yang-background);
+      color: var(--yin-yang-color);
+      &::after {
+        background-color: var(--yin-yang-color);
+      }
+    }
+    &.active {
+      background-color: var(--yin-yang-color);
+      color: var(--yin-yang-background);
+      &::after {
+        background-color: var(--yin-yang-background);
+      }
+    }
+  }
 }
 
 @keyframes spin {
-	100% {
-		transform: rotateZ(360deg);
-	}
+  100% {
+    transform: rotateZ(360deg);
+  }
 }

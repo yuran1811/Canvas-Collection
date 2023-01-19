@@ -12,29 +12,33 @@
 ### [**Inspire Projects**](./Inspire/)
 
 1.  Fireworks:
-    -   [**Ver 1**](./Inspire/Fireworks/Ver1)
-    -   [**Ver 2**](./Inspire/Fireworks/Ver2)
+    - [**Ver 1**](./Inspire/Fireworks/Ver1)
+    - [**Ver 2**](./Inspire/Fireworks/Ver2)
 2.  [**Galaxy**](./Inspire/Galaxy)
 3.  Particles:
-    -   [**Intersects**](./Inspire/Particles/Particles1)
-    -   [**Particles Connect**](./Inspire/Particles/Particles2)
+    - [**Intersects**](./Inspire/Particles/Particles1)
+    - [**Particles Connect**](./Inspire/Particles/Particles2)
 4.  [**Patterns**](./Inspire/Patterns)
 5.  [**Ripple**](./Inspire/Ripple)
 6.  [**Snowy**](./Inspire/Snowy)
 7.  [**Yin Yang**](./Inspire/YinYang)
 8.  [**Wave Dots**](./Inspire/WaveDots)
+9.  Magic Trail:
+    - [**Source**](https://github.com/yuran1811/magic-trail)
+    - [**Deploy**](https://yuran1811.github.io/magic-trail/)
+10. [**Sine Waves**](./Inspire/SineWaves)
 
-### Need server
+### Server required
 
-1. [**Sine Waves**](./Inspire/SineWaves)
-2. Three JS
-    - [**Space Field**](./Inspire/ThreeJS/SpaceField/)
+1. Three JS
+   - [**Space Field**](./Inspire/ThreeJS/SpaceField/)
 
-### Upcoming Games
+### Upcoming items
 
--   Rock - Paper - Scissor
--   Image Matching
--   Memory Game
--   Whac-a-mole
--   Breakout
--   Caro
+- Rock - Paper - Scissor
+- Image Matching
+- Memory Game
+- Whac-a-mole
+- Breakout
+- Caro
+- Dungeon Game

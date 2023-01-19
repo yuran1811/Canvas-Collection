@@ -1,5 +1,3 @@
-import * as dat from './node_modules';
-
 const gui = new dat.GUI();
 const canvas = document.querySelector('#app');
 const ctx = canvas.getContext('2d');
@@ -8,23 +6,23 @@ canvas.width = innerWidth;
 canvas.height = innerHeight;
 
 const wave = {
-	y: canvas.height / 2,
-	length: 0.01,
-	amplitude: 100,
-	frequency: 0.01,
+  y: canvas.height / 2,
+  length: 0.01,
+  amplitude: 100,
+  frequency: 0.01,
 };
 
 const strokeColor = {
-	h: 200,
-	s: 50,
-	l: 50,
+  h: 200,
+  s: 50,
+  l: 50,
 };
 
 const bgColor = {
-	r: 0,
-	g: 0,
-	b: 0,
-	a: 0.01,
+  r: 0,
+  g: 0,
+  b: 0,
+  a: 0.01,
 };
 
 const waveFolder = gui.addFolder('wave');
@@ -49,34 +47,28 @@ bgFolder.open();
 
 let increment = wave.frequency;
 const animation = () => {
-	requestAnimationFrame(animation);
+  requestAnimationFrame(animation);
 
-	ctx.save();
-	ctx.fillStyle = `rgba(${bgColor.r}, ${bgColor.g}, ${bgColor.g}, ${bgColor.a})`;
-	ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.save();
+  ctx.fillStyle = `rgba(${bgColor.r}, ${bgColor.g}, ${bgColor.g}, ${bgColor.a})`;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-	ctx.beginPath();
-	ctx.moveTo(0, canvas.height / 2);
-	for (let i = 0; i < canvas.width; i++) {
-		ctx.lineTo(
-			i,
-			wave.y +
-				Math.sin(i * wave.length + increment) *
-					wave.amplitude *
-					Math.sin(increment)
-		);
-	}
-	ctx.strokeStyle = `hsl(
+  ctx.beginPath();
+  ctx.moveTo(0, canvas.height / 2);
+  for (let i = 0; i < canvas.width; i++) {
+    ctx.lineTo(i, wave.y + Math.sin(i * wave.length + increment) * wave.amplitude * Math.sin(increment));
+  }
+  ctx.strokeStyle = `hsl(
     ${Math.abs(strokeColor.h * Math.sin(increment))},
     ${strokeColor.s}%,
     ${strokeColor.l}%)`;
-	ctx.stroke();
-	increment += wave.frequency;
+  ctx.stroke();
+  increment += wave.frequency;
 };
 animation();
 
 window.onresize = () => {
-	canvas.width = innerWidth;
-	canvas.height = innerHeight;
-	ctx.restore();
+  canvas.width = innerWidth;
+  canvas.height = innerHeight;
+  ctx.restore();
 };
