@@ -1,7 +1,9 @@
 const canvas = document.querySelector('canvas');
 const c = canvas.getContext('2d');
 
-const MAX_SNOW_BALL = 400;
+const GRAVITY = 0.1;
+
+const MAX_SNOW_BALL = 500;
 const MAX_SNOW_BALL_RADIUS = 5;
 const MAX_ACCELERATION = 3;
 const MAX_ACCELERATION_INC = 1;
@@ -12,7 +14,7 @@ const ACCELERATION_DEC = 0.5;
 const snowBalls = [];
 const mouse = { x: undefined, y: undefined };
 
-let numSnowBall = 100;
+let numSnowBall = 300;
 let screenAngle = 0;
 
 class SnowBall {
@@ -48,7 +50,7 @@ class SnowBall {
   }
 
   updatePosition(key) {
-    this[key] += this.velocity[key] + this.acceleration[key];
+    this[key] += this.velocity[key] + this.acceleration[key] + GRAVITY;
 
     key === 'y' && (this[key] += Math.pow(this.density, 2));
   }
@@ -102,7 +104,7 @@ const getNewSnowBall = (color = 'white') => {
   const y = 0; // Math.random() * innerHeight;
   const velocity = {
     x: 0,
-    y: Math.random() + 0.5,
+    y: Math.random() * 2 + 0.5,
   };
   const radius = Math.random() * MAX_SNOW_BALL_RADIUS + MAX_SNOW_BALL_RADIUS / 2;
   const delay = Math.random() * 10;

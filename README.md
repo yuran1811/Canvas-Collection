@@ -18,6 +18,7 @@
 3.  Particles:
     - [**Intersects**](./Inspire/Particles/Particles1)
     - [**Particles Connect**](./Inspire/Particles/Particles2)
+    - [**Magic Wheel**](./Inspire/Particles/Particles3)
 4.  [**Patterns**](./Inspire/Patterns)
 5.  [**Ripple**](./Inspire/Ripple)
 6.  [**Snowy**](./Inspire/Snowy)
