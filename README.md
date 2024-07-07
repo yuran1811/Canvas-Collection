@@ -1,38 +1,48 @@
-# Canvas-Collection
+<h1 align="center" style="font-size: 54px">Canvas Collection</h1>
 
-## This repo stores all my canvas projects !!!
+<p align="center" style="font-size: 16px"><strong>A repo shares my canvas projects and rewrite version of some other cool stuffs!</strong></p>
 
-### Game Station
+<p align="center">
+  <img alt="Stars" src="https://badgen.net/github/stars/yuran1811/Canvas-Collection">
+  <img alt="Forks" src="https://badgen.net/github/forks/yuran1811/Canvas-Collection">
+  <img alt="Issues" src="https://badgen.net/github/issues/yuran1811/Canvas-Collection">
+  <img alt="Commits" src="https://badgen.net/github/commits/yuran1811/Canvas-Collection">
+</p>
 
-1.  [**Shooting**](./GameStation/Shooting)
-2.  [**Go Hero**](./GameStation/GoHero)
-3.  [**Tic Tac Toe**](./GameStation/TicTacToe)
-4.  [**Hop**](./GameStation/Hop) (Upcoming)
+### GameStation
 
-### [**Inspire Projects**](./Inspire/)
+- [**GoHero**](<./src/GameStation/GoHero>)
+- [**Hop (upcoming)**](<./src/GameStation/Hop (upcoming)>)
+- [**Shooting**](<./src/GameStation/Shooting>)
+- [**TicTacToe**](<./src/GameStation/TicTacToe>)
 
-1.  Fireworks:
-    - [**Ver 1**](./Inspire/Fireworks/Ver1)
-    - [**Ver 2**](./Inspire/Fireworks/Ver2)
-2.  [**Galaxy**](./Inspire/Galaxy)
-3.  Particles:
-    - [**Intersects**](./Inspire/Particles/Particles1)
-    - [**Particles Connect**](./Inspire/Particles/Particles2)
-    - [**Magic Wheel**](./Inspire/Particles/Particles3)
-4.  [**Patterns**](./Inspire/Patterns)
-5.  [**Ripple**](./Inspire/Ripple)
-6.  [**Snowy**](./Inspire/Snowy)
-7.  [**Yin Yang**](./Inspire/YinYang)
-8.  [**Wave Dots**](./Inspire/WaveDots)
-9.  Magic Trail:
-    - [**Source**](https://github.com/yuran1811/magic-trail)
-    - [**Deploy**](https://yuran1811.github.io/magic-trail/)
-10. [**Sine Waves**](./Inspire/SineWaves)
+### Inspire
 
-### Server required
-
-1. Three JS
-   - [**Space Field**](./Inspire/ThreeJS/SpaceField/)
+- Destructure
+  - [**Ver1**](<./src/Inspire/Destructure/Ver1>)
+- [**Explosion**](<./src/Inspire/Explosion>)
+- [**FireAnimation**](<./src/Inspire/FireAnimation>)
+- Fireworks
+  - [**Ver1**](<./src/Inspire/Fireworks/Ver1>)
+  - [**Ver2**](<./src/Inspire/Fireworks/Ver2>)
+- [**Galaxy**](<./src/Inspire/Galaxy>)
+- Infinite
+  - [**MagicSquare**](<./src/Inspire/Infinite/MagicSquare>)
+- [**LeavesPattern**](<./src/Inspire/LeavesPattern>)
+- Particles
+  - [**Ver1**](<./src/Inspire/Particles/Ver1>)
+  - [**Ver2**](<./src/Inspire/Particles/Ver2>)
+  - [**Ver3**](<./src/Inspire/Particles/Ver3>)
+- [**Patterns**](<./src/Inspire/Patterns>)
+- [**Rings**](<./src/Inspire/Rings>)
+- [**Ripple**](<./src/Inspire/Ripple>)
+- [**SineWaves**](<./src/Inspire/SineWaves>)
+- [**Snowy**](<./src/Inspire/Snowy>)
+- ThreeJS
+  - [**Earth**](<./src/Inspire/ThreeJS/Earth>)
+  - [**SpaceField**](<./src/Inspire/ThreeJS/SpaceField>)
+- [**WaveDots**](<./src/Inspire/WaveDots>)
+- [**YinYang**](<./src/Inspire/YinYang>)
 
 ### Upcoming items
 
@@ -43,3 +53,7 @@
 - Breakout
 - Caro
 - Dungeon Game
+
+### Refs
+
+- [Tibixx](https://codepen.io/Tibixx/pens/showcase)

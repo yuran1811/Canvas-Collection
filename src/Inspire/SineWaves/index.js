@@ -29,7 +29,7 @@ const waveFolder = gui.addFolder('wave');
 waveFolder.add(wave, 'y', 0, canvas.height);
 waveFolder.add(wave, 'length', -0.1, 0.1);
 waveFolder.add(wave, 'amplitude', 0, 350);
-waveFolder.add(wave, 'frequency', -1, 1);
+waveFolder.add(wave, 'frequency', -0.6, 0.6);
 waveFolder.open();
 
 const strokeFolder = gui.addFolder('stroke');
@@ -54,8 +54,9 @@ const animation = () => {
 
   ctx.beginPath();
   ctx.moveTo(-5, canvas.height / 2);
+
   for (let i = 0; i < canvas.width; i++)
-    ctx.lineTo(i, wave.y + Math.sin(i * wave.length + increment) * wave.amplitude * Math.sin(increment));
+    ctx.lineTo(i, wave.y + Math.sin(i * wave.length + increment) * Math.sin(increment) * wave.amplitude);
 
   ctx.strokeStyle = `hsl(
     ${Math.abs(strokeColor.h * Math.sin(increment))},
@@ -63,6 +64,7 @@ const animation = () => {
     ${strokeColor.l}%
   )`;
   ctx.stroke();
+  ctx.closePath();
 
   increment += wave.frequency;
 };
