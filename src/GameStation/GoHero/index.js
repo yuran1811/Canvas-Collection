@@ -1,9 +1,9 @@
-const GRAVITY = 1.5;
+const GRAVITY = 9.8 / 15;
 const NUM_BLOCK = 20;
 const NUM_PARTICLE = 400;
 const SPACE = 300;
 const MARGIN = 400;
-const JUMP_H = 20;
+const JUMP_H = 16;
 const PLATFORM_W = 200;
 const PLATFORM_H = 20;
 const PARTICLE_GRAVITY = 0.03;
@@ -12,7 +12,6 @@ const PARTICLE_FRICTION = 0.99;
 const colors = ['#2185C5', '#7ECEFD', '#FFF6E5', '#FF7F66', '#0952BD', '#A5BFF0', '#118CD6', '#1AAEE8', '#F2E8C9'];
 const colorsLth = colors.length;
 const onePiece = (Math.PI * 2) / NUM_PARTICLE;
-const particles = [];
 
 const winContainer = document.querySelector('.win-container');
 const loseContainer = document.querySelector('.lose-container');
@@ -22,6 +21,7 @@ const canvas = document.querySelector('#app');
 const c = canvas.getContext('2d');
 
 const app = {
+  particles: [],
   genericObjects: [],
   platforms: [],
   keys: undefined,
@@ -58,7 +58,7 @@ const app = {
     clearInterval(this.fireworksInterval);
     this.fireworksAnimate = undefined;
     this.fireworksInterval = undefined;
-    particles.length = 0;
+    this.particles.length = 0;
 
     this.score = 0;
     this.scoreInc = 5;
@@ -174,7 +174,7 @@ const app = {
           y: Math.sin(onePiece * i) * Math.random() * 7,
         };
 
-        particles.push(new Particle(x, y, radius, color, velocity));
+        this.particles.push(new Particle(x, y, radius, color, velocity));
       }
     };
     const animate = () => {
@@ -183,9 +183,9 @@ const app = {
       c.fillStyle = `rgba(0, 0, 0, 0.1)`;
       c.fillRect(0, 0, canvas.width, canvas.height);
 
-      particles.forEach((particle, idx) => {
+      this.particles.forEach((particle, idx) => {
         if (particle.time > 0) particle.update();
-        else particles.splice(idx, 1);
+        else this.particles.splice(idx, 1);
       });
     };
 
@@ -211,7 +211,7 @@ const app = {
 
 class Player {
   constructor(x = 300, y = 300) {
-    this.speed = 10;
+    this.speed = 5;
     this.width = 30;
     this.height = 30;
     this.position = { x, y };
@@ -231,7 +231,7 @@ class Player {
     this.position.y += this.velocity.y;
 
     if (this.isJump) {
-      this.velocity.y -= this.jumpHeight;
+      this.velocity.y = -this.jumpHeight;
       this.isJump = 0;
     }
 

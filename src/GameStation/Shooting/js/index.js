@@ -309,7 +309,7 @@ const animation = () => {
     // removeFromEdge(enemies, index, enemy.x, enemy.y);
 
     const dist = Math.hypot(player.x - enemy.x, player.y - enemy.y);
-    if (dist - enemy.radius - player.radius <= 0.5) endGame();
+    if (dist - enemy.radius - player.radius <= 0.1) endGame();
 
     projectiles.forEach((pjtile, pjIndex) => {
       if (pjtile.isEnemy) {
@@ -340,11 +340,11 @@ const animation = () => {
           );
         }
 
-        if (enemy.speed < 8) enemy.speed *= 2;
+        if (enemy.speed < 8) enemy.speed *= 1.75;
         if (enemy.radius > 15) {
           increaseScore(10);
           const newRadius = enemy.radius - PlayerSelect.attackDamage;
-          if (newRadius < 5) enemies.splice(index, 1);
+          if (newRadius < 10) enemies.splice(index, 1);
           else
             gsap.to(enemy, {
               radius: newRadius,
